@@ -1,10 +1,10 @@
 const CACHE = 'hankongbu-v1';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-192.svg',
-  '/icon-512.svg',
+  '/korean-study/',
+  '/korean-study/index.html',
+  '/korean-study/manifest.json',
+  '/korean-study/icon-192.svg',
+  '/korean-study/icon-512.svg',
   'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap'
 ];
 
