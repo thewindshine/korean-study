@@ -1,4 +1,4 @@
-const CACHE = 'hankongbu-v2';
+const CACHE = 'hankongbu-v3';
 const ASSETS = [
   '/korean-study/',
   '/korean-study/index.html',
