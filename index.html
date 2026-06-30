@@ -5,1221 +5,873 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>한공부 · 韓語學習</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#D4522A">
+<meta name="theme-color" content="#C8401F">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="한공부">
 <link rel="apple-touch-icon" href="/korean-study/icon-192.svg">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
 
-  :root {
-    --bg: #F7F6F3;
-    --surface: #FFFFFF;
-    --border: #E8E5DF;
-    --text-primary: #1A1916;
-    --text-secondary: #6B6860;
-    --text-muted: #A8A59E;
-    --accent: #D4522A;
-    --accent-soft: #FBF0EC;
-    --accent2: #3A6EA5;
-    --accent2-soft: #EBF1F8;
-    --green: #2E7D5E;
-    --green-soft: #E8F4EE;
-    --radius: 14px;
-    --radius-sm: 8px;
-    --shadow: 0 2px 12px rgba(0,0,0,0.07);
-    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
-  }
+:root {
+  --bg: #F5F4F0;
+  --surface: #FFFFFF;
+  --border: #E2DED7;
+  --text: #1A1916;
+  --text2: #5A5750;
+  --muted: #9A9790;
+  --accent: #C8401F;
+  --accent-soft: #FAF0EC;
+  --blue: #2D5FA0;
+  --blue-soft: #EAF0FA;
+  --green: #1E6E4A;
+  --green-soft: #E6F2EC;
+  --red-soft: #FFF0EE;
+  --r: 16px;
+  --rs: 10px;
+  --nav-h: 72px;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-  body {
-    font-family: 'Noto Sans TC', 'Noto Sans KR', sans-serif;
-    background: var(--bg);
-    color: var(--text-primary);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
+body {
+  font-family: 'Noto Sans TC', 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: var(--nav-h);
+  -webkit-font-smoothing: antialiased;
+}
 
-  /* ── HEADER ── */
-  header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 20px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    height: 56px;
-  }
-  .logo {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: -0.5px;
-  }
-  .logo span {
-    color: var(--text-secondary);
-    font-weight: 300;
-    font-size: 13px;
-    margin-left: 6px;
-  }
-  header nav {
-    margin-left: auto;
-    display: flex;
-    gap: 4px;
-  }
-  .nav-btn {
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: none;
-    background: transparent;
-    color: var(--text-secondary);
-    font-size: 13px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.15s;
-  }
-  .nav-btn:hover { background: var(--bg); color: var(--text-primary); }
-  .nav-btn.active { background: var(--accent); color: white; }
+/* ── HEADER ── */
+header {
+  background: var(--accent);
+  padding: 14px 20px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo-kr { font-family: 'Noto Sans KR'; font-size: 22px; font-weight: 700; color: white; }
+.logo-zh { font-size: 13px; color: rgba(255,255,255,0.75); margin-left: 8px; }
+.header-right { display: flex; gap: 10px; align-items: center; }
+.hdr-btn {
+  background: rgba(255,255,255,0.2);
+  border: none; border-radius: 20px;
+  color: white; font-size: 14px; font-weight: 500;
+  padding: 6px 14px; cursor: pointer; font-family: inherit;
+}
+.stat-badge {
+  background: rgba(255,255,255,0.25);
+  border-radius: 12px;
+  padding: 4px 10px;
+  font-size: 13px; color: white; font-weight: 600;
+}
 
-  /* ── MAIN ── */
-  main {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 24px 16px 100px;
-  }
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px; cursor: pointer;
+  border: none; background: none;
+  color: var(--muted); font-family: inherit;
+  transition: color 0.15s;
+  padding: 8px 4px;
+}
+.nav-item.active { color: var(--accent); }
+.nav-icon { font-size: 24px; line-height: 1; }
+.nav-label { font-size: 11px; font-weight: 600; }
 
-  /* ── SECTIONS ── */
-  .section { display: none; }
-  .section.active { display: block; }
+/* ── MAIN ── */
+main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 
-  /* ── UPLOAD SECTION ── */
-  .upload-hero {
-    background: var(--surface);
-    border: 2px dashed var(--border);
-    border-radius: var(--radius);
-    padding: 48px 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-    position: relative;
-  }
-  .upload-hero:hover { border-color: var(--accent); background: var(--accent-soft); }
-  .upload-hero.dragover { border-color: var(--accent); background: var(--accent-soft); }
-  .upload-icon { font-size: 48px; margin-bottom: 12px; }
-  .upload-hero h2 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
-  .upload-hero p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
-  .upload-hero input[type=file] {
-    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
-  }
+/* ── SECTIONS ── */
+.section { display: none; }
+.section.active { display: block; }
 
-  .upload-preview {
-    margin-top: 20px;
-    display: none;
-  }
-  .upload-preview.show { display: block; }
-  .preview-img {
-    width: 100%;
-    max-height: 320px;
-    object-fit: contain;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-  }
+/* ── PAGE TITLE ── */
+.page-title {
+  font-size: 13px; font-weight: 700;
+  color: var(--muted); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 18px;
+}
 
-  .process-btn {
-    width: 100%;
-    margin-top: 16px;
-    padding: 14px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: var(--radius);
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    transition: opacity 0.2s;
-  }
-  .process-btn:hover { opacity: 0.9; }
-  .process-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+/* ── SCAN ── */
+.upload-box {
+  background: var(--surface);
+  border: 2px dashed var(--border);
+  border-radius: var(--r);
+  padding: 36px 20px;
+  text-align: center;
+  margin-bottom: 14px;
+}
+.upload-box .icon { font-size: 52px; margin-bottom: 10px; }
+.upload-box h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.upload-box p { color: var(--text2); font-size: 16px; line-height: 1.6; }
 
-  /* ── AI RESULT ── */
-  .ai-result {
-    margin-top: 20px;
-    display: none;
-  }
-  .ai-result.show { display: block; }
+.btn-row { display: flex; gap: 12px; margin-bottom: 14px; }
+.btn-primary {
+  flex: 1; padding: 16px; border: none; border-radius: var(--r);
+  background: var(--accent); color: white;
+  font-size: 18px; font-weight: 700; cursor: pointer; font-family: inherit;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-secondary {
+  flex: 1; padding: 16px; border: 1px solid var(--border); border-radius: var(--r);
+  background: var(--surface); color: var(--text);
+  font-size: 18px; font-weight: 700; cursor: pointer; font-family: inherit;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-green {
+  width: 100%; padding: 16px; border: none; border-radius: var(--r);
+  background: var(--green); color: white;
+  font-size: 18px; font-weight: 700; cursor: pointer; font-family: inherit;
+  margin-top: 14px;
+}
 
-  .result-section {
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    margin-bottom: 16px;
-    overflow: hidden;
-  }
-  .result-section-header {
-    padding: 14px 18px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .result-section-body { padding: 16px 18px; }
+.preview-img {
+  width: 100%; max-height: 300px; object-fit: contain;
+  border-radius: var(--r); border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.analyze-btn {
+  width: 100%; padding: 18px; border: none; border-radius: var(--r);
+  background: var(--accent); color: white;
+  font-size: 20px; font-weight: 700; cursor: pointer; font-family: inherit;
+}
+.analyze-btn:disabled { opacity: 0.5; }
 
-  /* ── VOCAB ITEM (in result) ── */
-  .vocab-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .vocab-row:last-child { border-bottom: none; }
-  .vocab-kr { font-family: 'Noto Sans KR', sans-serif; font-size: 18px; font-weight: 500; min-width: 80px; }
-  .vocab-reading { font-size: 13px; color: var(--text-secondary); min-width: 80px; }
-  .vocab-zh { font-size: 14px; color: var(--text-primary); flex: 1; }
-  .tts-btn {
-    background: none; border: none; cursor: pointer; font-size: 18px; padding: 4px;
-    color: var(--text-muted); transition: color 0.15s;
-  }
-  .tts-btn:hover { color: var(--accent); }
+/* loading */
+.loading { display: none; text-align: center; padding: 40px 20px; }
+.loading.show { display: block; }
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid var(--border); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+  margin: 0 auto 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading p { font-size: 17px; color: var(--text2); }
 
-  .save-all-btn {
-    width: 100%;
-    padding: 12px;
-    background: var(--green);
-    color: white;
-    border: none;
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    margin-top: 16px;
-  }
+/* result */
+.result-box { display: none; }
+.result-box.show { display: block; }
+.result-card {
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border); margin-bottom: 14px; overflow: hidden;
+}
+.result-card-header {
+  padding: 14px 18px; background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  font-size: 15px; font-weight: 700; color: var(--text2);
+}
+.result-card-body { padding: 14px 18px; }
 
-  /* ── CARDS SECTION ── */
-  .cards-controls {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-  .filter-btn {
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text-secondary);
-    font-size: 13px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.15s;
-  }
-  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+/* vocab row in result */
+.vrow {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.vrow:last-child { border-bottom: none; }
+.vrow-kr { font-family: 'Noto Sans KR'; font-size: 22px; font-weight: 700; min-width: 90px; }
+.vrow-rom { font-size: 14px; color: var(--muted); min-width: 80px; }
+.vrow-zh { font-size: 17px; flex: 1; }
+.tts-btn { background: none; border: none; font-size: 22px; cursor: pointer; padding: 4px; }
 
-  .flashcard-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .flashcard-counter {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-  }
+/* ── CARDS ── */
+.filter-row { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+.filter-chip {
+  padding: 8px 16px; border-radius: 20px;
+  border: 1px solid var(--border); background: var(--surface);
+  font-size: 15px; cursor: pointer; font-family: inherit; color: var(--text2);
+  font-weight: 500;
+}
+.filter-chip.active { background: var(--accent); border-color: var(--accent); color: white; }
 
-  /* 3D flip card */
-  .card-scene {
-    width: 100%;
-    max-width: 420px;
-    height: 220px;
-    perspective: 1000px;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-  .card-inner {
-    width: 100%; height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
-  }
-  .card-inner.flipped { transform: rotateY(180deg); }
-  .card-face {
-    position: absolute; inset: 0;
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    backface-visibility: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    text-align: center;
-    gap: 10px;
-  }
-  .card-face.back { transform: rotateY(180deg); background: var(--accent-soft); }
-  .card-tag {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .card-kr {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 36px;
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.2;
-  }
-  .card-reading { font-size: 15px; color: var(--text-secondary); }
-  .card-zh { font-size: 20px; font-weight: 500; color: var(--accent); }
-  .card-hint { font-size: 12px; color: var(--text-muted); }
+.card-counter { text-align: center; font-size: 16px; color: var(--muted); margin-bottom: 12px; }
 
-  .card-actions {
-    display: flex;
-    gap: 12px;
-    width: 100%;
-    max-width: 420px;
-  }
-  .card-action-btn {
-    flex: 1;
-    padding: 11px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-    background: var(--surface);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.15s;
-  }
-  .card-action-btn.again { border-color: var(--accent); color: var(--accent); }
-  .card-action-btn.again:hover { background: var(--accent); color: white; }
-  .card-action-btn.good { border-color: var(--green); color: var(--green); }
-  .card-action-btn.good:hover { background: var(--green); color: white; }
-  .card-action-btn.speak { border-color: var(--accent2); color: var(--accent2); }
-  .card-action-btn.speak:hover { background: var(--accent2); color: white; }
+.card-scene {
+  width: 100%; height: 260px;
+  perspective: 1000px; cursor: pointer; margin-bottom: 18px;
+}
+.card-inner {
+  width: 100%; height: 100%;
+  position: relative; transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+.card-inner.flipped { transform: rotateY(180deg); }
+.card-face {
+  position: absolute; inset: 0;
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  backface-visibility: hidden;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 28px; text-align: center; gap: 12px;
+}
+.card-face.back { transform: rotateY(180deg); background: var(--accent-soft); }
+.card-label { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.card-kr { font-family: 'Noto Sans KR'; font-size: 52px; font-weight: 700; line-height: 1.1; }
+.card-rom { font-size: 18px; color: var(--text2); }
+.card-zh { font-size: 32px; font-weight: 700; color: var(--accent); }
+.card-tap { font-size: 15px; color: var(--muted); }
 
-  /* ── FILL-IN ── */
-  .fill-card {
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    padding: 24px;
-    margin-bottom: 16px;
-    box-shadow: var(--shadow);
-  }
-  .fill-q {
-    font-size: 16px;
-    line-height: 1.8;
-    margin-bottom: 16px;
-  }
-  .fill-blank {
-    display: inline-block;
-    min-width: 80px;
-    border-bottom: 2px solid var(--accent);
-    padding: 2px 6px;
-    font-size: 18px;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-weight: 500;
-    outline: none;
-    text-align: center;
-    color: var(--accent);
-    background: transparent;
-    vertical-align: middle;
-  }
-  .fill-blank.correct { border-color: var(--green); color: var(--green); }
-  .fill-blank.wrong { border-color: #D32F2F; color: #D32F2F; }
-  .fill-hint { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-  .fill-answer-reveal {
-    margin-top: 8px;
-    font-size: 14px;
-    color: var(--text-secondary);
-    display: none;
-  }
-  .fill-answer-reveal.show { display: block; }
-  .check-btn {
-    padding: 8px 20px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    margin-top: 8px;
-  }
+.card-btns { display: flex; gap: 12px; }
+.card-btn {
+  flex: 1; padding: 16px 8px; border-radius: var(--r);
+  border: 1.5px solid var(--border); background: var(--surface);
+  font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit;
+}
+.card-btn.again { border-color: var(--accent); color: var(--accent); }
+.card-btn.speak { border-color: var(--blue); color: var(--blue); }
+.card-btn.good { border-color: var(--green); color: var(--green); }
 
-  /* ── GRAMMAR ── */
-  .grammar-card {
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    margin-bottom: 16px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-  }
-  .grammar-header {
-    padding: 16px 20px;
-    background: var(--accent2-soft);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-  }
-  .grammar-title { font-size: 16px; font-weight: 700; flex: 1; }
-  .grammar-kr { font-family: 'Noto Sans KR'; color: var(--accent2); font-size: 20px; }
-  .grammar-body { padding: 18px 20px; display: none; }
-  .grammar-body.open { display: block; }
-  .grammar-pattern {
-    font-family: 'Noto Sans KR', monospace;
-    background: var(--bg);
-    padding: 10px 14px;
-    border-radius: var(--radius-sm);
-    margin-bottom: 12px;
-    font-size: 15px;
-    color: var(--accent2);
-    font-weight: 500;
-  }
-  .grammar-examples { list-style: none; }
-  .grammar-examples li {
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 14px;
-    line-height: 1.7;
-  }
-  .grammar-examples li:last-child { border-bottom: none; }
-  .grammar-examples .kr { font-family: 'Noto Sans KR'; font-size: 16px; }
-  .grammar-examples .zh { color: var(--text-secondary); }
+/* ── FILL ── */
+.fill-card {
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border); padding: 22px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.fill-q { font-size: 20px; line-height: 2; margin-bottom: 12px; }
+.fill-input {
+  display: inline-block; min-width: 90px;
+  border: none; border-bottom: 3px solid var(--accent);
+  font-size: 22px; font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700; color: var(--accent); background: transparent;
+  outline: none; text-align: center; padding: 2px 6px;
+  vertical-align: middle;
+}
+.fill-input.correct { border-color: var(--green); color: var(--green); }
+.fill-input.wrong { border-color: #C62828; color: #C62828; }
+.fill-hint { font-size: 16px; color: var(--muted); margin-bottom: 12px; }
+.fill-reveal { font-size: 16px; color: var(--text2); display: none; margin-bottom: 10px; }
+.fill-reveal.show { display: block; }
+.confirm-btn {
+  padding: 12px 28px; background: var(--accent); color: white;
+  border: none; border-radius: var(--rs); font-size: 17px;
+  font-weight: 700; cursor: pointer; font-family: inherit;
+}
 
-  /* ── QUIZ ── */
-  .quiz-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  .quiz-progress-bar {
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    margin-bottom: 24px;
-    overflow: hidden;
-  }
-  .quiz-progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 2px;
-    transition: width 0.3s;
-  }
-  .quiz-q {
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    padding: 28px 24px;
-    margin-bottom: 16px;
-    box-shadow: var(--shadow);
-    text-align: center;
-  }
-  .quiz-question-text {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-bottom: 12px;
-  }
-  .quiz-word {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 40px;
-    font-weight: 700;
-  }
-  .quiz-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  .quiz-opt {
-    padding: 14px 12px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    cursor: pointer;
-    font-family: inherit;
-    text-align: center;
-    transition: all 0.15s;
-    line-height: 1.4;
-  }
-  .quiz-opt:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
-  .quiz-opt.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 600; }
-  .quiz-opt.wrong { background: #FFF0EE; border-color: #D32F2F; color: #D32F2F; }
-  .quiz-opt:disabled { cursor: default; }
-  .quiz-score {
-    text-align: center;
-    padding: 40px 24px;
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-  }
-  .quiz-score-num { font-size: 64px; font-weight: 700; color: var(--accent); }
-  .quiz-score-label { font-size: 16px; color: var(--text-secondary); margin-top: 8px; }
+/* ── PRON ── */
+.pron-card {
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border); padding: 20px;
+  margin-bottom: 12px; display: flex; align-items: center; gap: 16px;
+}
+.pron-kr { font-family: 'Noto Sans KR'; font-size: 34px; font-weight: 700; min-width: 110px; }
+.pron-info { flex: 1; }
+.pron-rom { font-size: 15px; color: var(--muted); }
+.pron-zh { font-size: 20px; font-weight: 500; }
+.pron-play {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--blue); color: white; border: none;
+  font-size: 22px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
 
-  /* ── PRONUNCIATION ── */
-  .pron-card {
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    padding: 20px;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    box-shadow: var(--shadow);
-  }
-  .pron-kr { font-family: 'Noto Sans KR'; font-size: 26px; font-weight: 700; min-width: 100px; }
-  .pron-info { flex: 1; }
-  .pron-reading { font-size: 14px; color: var(--text-secondary); }
-  .pron-zh { font-size: 15px; color: var(--text-primary); }
-  .pron-btns { display: flex; gap: 8px; }
-  .pron-play-btn {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    border: none;
-    background: var(--accent2);
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: opacity 0.15s;
-  }
-  .pron-play-btn:hover { opacity: 0.85; }
+/* ── GRAMMAR ── */
+.grammar-card {
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border); margin-bottom: 14px; overflow: hidden;
+}
+.grammar-hdr {
+  padding: 18px 20px; background: var(--blue-soft);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; cursor: pointer; gap: 12px;
+}
+.grammar-hdr-text { flex: 1; }
+.grammar-name { font-size: 19px; font-weight: 700; }
+.grammar-kr-form { font-family: 'Noto Sans KR'; font-size: 22px; color: var(--blue); margin-top: 2px; }
+.grammar-body { padding: 18px 20px; display: none; }
+.grammar-body.open { display: block; }
+.grammar-pattern {
+  font-family: 'Noto Sans KR'; background: var(--bg);
+  padding: 12px 16px; border-radius: var(--rs);
+  font-size: 18px; color: var(--blue); font-weight: 600; margin-bottom: 14px;
+}
+.grammar-ex { list-style: none; }
+.grammar-ex li { padding: 10px 0; border-bottom: 1px solid var(--border); }
+.grammar-ex li:last-child { border-bottom: none; }
+.grammar-ex-kr { font-family: 'Noto Sans KR'; font-size: 20px; margin-bottom: 4px; }
+.grammar-ex-zh { font-size: 16px; color: var(--text2); }
 
-  /* ── EMPTY STATE ── */
-  .empty-state {
-    text-align: center;
-    padding: 60px 24px;
-    color: var(--text-muted);
-  }
-  .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
-  .empty-state h3 { font-size: 16px; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
-  .empty-state p { font-size: 14px; }
+/* ── QUIZ ── */
+.quiz-meta { display: flex; justify-content: space-between; margin-bottom: 12px; }
+.quiz-meta span { font-size: 17px; color: var(--text2); font-weight: 600; }
+.progress-bar { height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 22px; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.3s; }
+.quiz-word-card {
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border); padding: 36px 24px;
+  text-align: center; margin-bottom: 18px;
+}
+.quiz-prompt { font-size: 17px; color: var(--text2); margin-bottom: 14px; }
+.quiz-word { font-family: 'Noto Sans KR'; font-size: 56px; font-weight: 700; }
+.quiz-rom { font-size: 17px; color: var(--muted); margin-top: 8px; }
+.quiz-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.quiz-opt {
+  padding: 18px 12px; background: var(--surface);
+  border: 1.5px solid var(--border); border-radius: var(--r);
+  font-size: 18px; cursor: pointer; font-family: inherit;
+  text-align: center; line-height: 1.4; font-weight: 500;
+}
+.quiz-opt:disabled { cursor: default; }
+.quiz-opt.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 700; }
+.quiz-opt.wrong { background: var(--red-soft); border-color: #C62828; color: #C62828; }
 
-  /* ── LOADING ── */
-  .loading {
-    display: none;
-    text-align: center;
-    padding: 32px;
-    color: var(--text-secondary);
-  }
-  .loading.show { display: block; }
-  .spinner {
-    width: 32px; height: 32px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 12px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+.score-card {
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border); padding: 48px 24px; text-align: center;
+}
+.score-num { font-size: 80px; font-weight: 700; color: var(--accent); }
+.score-label { font-size: 20px; color: var(--text2); margin-top: 8px; }
+.retry-btn {
+  margin-top: 24px; padding: 16px 40px;
+  background: var(--accent); color: white; border: none;
+  border-radius: var(--r); font-size: 18px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+}
 
-  /* ── TOAST ── */
-  .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--text-primary);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 14px;
-    z-index: 999;
-    transition: transform 0.3s;
-    white-space: nowrap;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+/* ── EMPTY ── */
+.empty {
+  text-align: center; padding: 60px 24px;
+}
+.empty .eicon { font-size: 56px; margin-bottom: 14px; }
+.empty h3 { font-size: 20px; font-weight: 700; color: var(--text2); margin-bottom: 8px; }
+.empty p { font-size: 17px; color: var(--muted); }
 
-  /* ── SECTION TITLE ── */
-  .section-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 16px;
-  }
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: calc(var(--nav-h) + 16px); left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: #1A1916; color: white;
+  padding: 12px 24px; border-radius: 24px;
+  font-size: 16px; z-index: 999; transition: transform 0.25s;
+  white-space: nowrap; font-weight: 500;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* mobile tweaks */
-  @media (max-width: 480px) {
-    .card-kr { font-size: 28px; }
-    .quiz-word { font-size: 32px; }
-    .quiz-options { grid-template-columns: 1fr; }
-    header nav { gap: 2px; }
-    .nav-btn { padding: 5px 10px; font-size: 12px; }
-  }
+/* ── LIBRARY HEADER ── */
+.lib-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px;
+}
+.lib-count { font-size: 16px; color: var(--text2); font-weight: 600; }
+.lib-clear {
+  padding: 6px 14px; border: 1px solid #C62828; border-radius: 20px;
+  background: none; color: #C62828; font-size: 14px; cursor: pointer; font-family: inherit;
+}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">한공부<span>韓語學習</span></div>
-  <nav>
-    <button class="nav-btn active" onclick="showSection('upload')">📸 掃描</button>
-    <button class="nav-btn" onclick="showSection('cards')">🃏 單字卡</button>
-    <button class="nav-btn" onclick="showSection('fill')">✏️ 填空</button>
-    <button class="nav-btn" onclick="showSection('pron')">🔊 發音</button>
-    <button class="nav-btn" onclick="showSection('grammar')">📝 文法</button>
-    <button class="nav-btn" onclick="showSection('quiz')">🧪 Quiz</button>
-    <button class="nav-btn" onclick="showProxySettings()" title="API設定">⚙️</button>
-  </nav>
+  <div>
+    <span class="logo-kr">한공부</span>
+    <span class="logo-zh">韓語學習</span>
+  </div>
+  <div class="header-right">
+    <span class="stat-badge" id="totalBadge">0 個單字</span>
+    <button class="hdr-btn" onclick="showApiSettings()">⚙️</button>
+  </div>
 </header>
 
 <main>
-
-  <!-- ─── UPLOAD ─── -->
-  <div class="section active" id="section-upload">
-    <div class="section-title">拍照上傳書頁</div>
-    <div class="upload-hero" id="uploadArea">
-      <div class="upload-icon">📖</div>
+  <!-- ── 掃描 ── -->
+  <div class="section active" id="sec-scan">
+    <div class="page-title">📸 掃描書頁</div>
+    <div class="upload-box" id="uploadBox">
+      <div class="icon">📖</div>
       <h2>上傳書頁照片</h2>
-      <p>拍下你的韓語課本頁面<br>AI 會自動識別單字、文法和例句</p>
+      <p>AI 自動識別單字、文法和例句</p>
     </div>
-    <div style="display:flex;gap:10px;margin-top:12px">
-      <button onclick="document.getElementById('fileInputCamera').click()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;background:var(--accent);color:white;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
-        📷 拍照
-      </button>
-      <button onclick="document.getElementById('fileInputGallery').click()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;background:var(--surface);color:var(--text-primary);border:1px solid var(--border);border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
-        🖼️ 圖庫
-      </button>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="document.getElementById('camInput').click()">📷 拍照</button>
+      <button class="btn-secondary" onclick="document.getElementById('galInput').click()">🖼️ 圖庫</button>
     </div>
-    <input type="file" accept="image/*" capture="environment" id="fileInputCamera" onchange="handleFile(event)" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px">
-    <input type="file" accept="image/*" id="fileInputGallery" onchange="handleFile(event)" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px">
+    <input type="file" accept="image/*" capture="environment" id="camInput" onchange="handleFile(event)" style="display:none">
+    <input type="file" accept="image/*" id="galInput" onchange="handleFile(event)" style="display:none">
 
-    <div class="upload-preview" id="uploadPreview">
-      <img id="previewImg" class="preview-img" alt="預覽">
-      <button class="process-btn" id="processBtn" onclick="processImage()">🤖 分析書頁內容</button>
+    <div id="previewArea" style="display:none">
+      <img id="previewImg" class="preview-img">
+      <button class="analyze-btn" id="analyzeBtn" onclick="analyze()">🤖 分析書頁內容</button>
     </div>
 
     <div class="loading" id="loadingDiv">
       <div class="spinner"></div>
-      <div>AI 正在識別書頁內容……</div>
+      <p>AI 正在識別書頁內容……</p>
     </div>
 
-    <div class="ai-result" id="aiResult">
-      <div class="result-section" id="vocabResult" style="display:none">
-        <div class="result-section-header">📚 識別到的單字</div>
-        <div class="result-section-body" id="vocabBody"></div>
+    <div class="result-box" id="resultBox">
+      <div class="result-card" id="resVocab" style="display:none">
+        <div class="result-card-header">📚 識別到的單字</div>
+        <div class="result-card-body" id="resVocabBody"></div>
       </div>
-      <div class="result-section" id="grammarResult" style="display:none">
-        <div class="result-section-header">📝 文法要點</div>
-        <div class="result-section-body" id="grammarBody" style="white-space:pre-wrap;font-size:14px;line-height:1.8;color:var(--text-secondary)"></div>
+      <div class="result-card" id="resNotes" style="display:none">
+        <div class="result-card-header">📝 文法要點</div>
+        <div class="result-card-body" id="resNotesBody" style="font-size:16px;line-height:1.9;color:var(--text2);white-space:pre-wrap"></div>
       </div>
-      <div class="result-section" id="exampleResult" style="display:none">
-        <div class="result-section-header">💬 例句</div>
-        <div class="result-section-body" id="exampleBody"></div>
+      <div class="result-card" id="resSentences" style="display:none">
+        <div class="result-card-header">💬 例句</div>
+        <div class="result-card-body" id="resSentBody"></div>
       </div>
-      <button class="save-all-btn" onclick="saveAll()">✅ 儲存到我的學習庫</button>
+      <button class="btn-green" onclick="saveAll()">✅ 加入學習庫</button>
     </div>
   </div>
 
-  <!-- ─── CARDS ─── -->
-  <div class="section" id="section-cards">
-    <div class="section-title">單字卡</div>
-    <div class="cards-controls">
-      <button class="filter-btn active" onclick="filterCards('all',this)">全部</button>
-      <button class="filter-btn" onclick="filterCards('again',this)">❌ 再練習</button>
-      <button class="filter-btn" onclick="filterCards('good',this)">✅ 已掌握</button>
-      <button class="filter-btn" onclick="shuffleCards(this)">🔀 隨機</button>
+  <!-- ── 單字卡 ── -->
+  <div class="section" id="sec-cards">
+    <div class="lib-header">
+      <div class="page-title" style="margin:0">🃏 單字卡</div>
+      <span class="lib-count" id="cardsCount"></span>
     </div>
-    <div class="flashcard-area" id="flashcardArea">
-      <div class="empty-state">
-        <div class="icon">🃏</div>
-        <h3>還沒有單字卡</h3>
-        <p>先用「掃描」功能上傳書頁</p>
-      </div>
+    <div class="filter-row">
+      <button class="filter-chip active" onclick="setFilter('all',this)">全部</button>
+      <button class="filter-chip" onclick="setFilter('again',this)">❌ 再練習</button>
+      <button class="filter-chip" onclick="setFilter('good',this)">✅ 掌握</button>
+      <button class="filter-chip" onclick="shuffleVocab(this)">🔀 隨機</button>
     </div>
+    <div id="cardArea"></div>
   </div>
 
-  <!-- ─── FILL ─── -->
-  <div class="section" id="section-fill">
-    <div class="section-title">填空練習</div>
-    <div id="fillArea">
-      <div class="empty-state">
-        <div class="icon">✏️</div>
-        <h3>還沒有練習題</h3>
-        <p>先用「掃描」功能上傳書頁</p>
-      </div>
-    </div>
+  <!-- ── 填空 ── -->
+  <div class="section" id="sec-fill">
+    <div class="page-title">✏️ 填空練習</div>
+    <div id="fillArea"></div>
   </div>
 
-  <!-- ─── PRONUNCIATION ─── -->
-  <div class="section" id="section-pron">
-    <div class="section-title">發音對照</div>
-    <div id="pronArea">
-      <div class="empty-state">
-        <div class="icon">🔊</div>
-        <h3>還沒有單字</h3>
-        <p>先用「掃描」功能上傳書頁</p>
-      </div>
-    </div>
+  <!-- ── 發音 ── -->
+  <div class="section" id="sec-pron">
+    <div class="page-title">🔊 發音對照</div>
+    <div id="pronArea"></div>
   </div>
 
-  <!-- ─── GRAMMAR ─── -->
-  <div class="section" id="section-grammar">
-    <div class="section-title">文法筆記</div>
-    <div id="grammarArea">
-      <div class="empty-state">
-        <div class="icon">📝</div>
-        <h3>還沒有文法筆記</h3>
-        <p>先用「掃描」功能上傳書頁</p>
-      </div>
-    </div>
+  <!-- ── 文法 ── -->
+  <div class="section" id="sec-grammar">
+    <div class="page-title">📝 文法筆記</div>
+    <div id="grammarArea"></div>
   </div>
 
-  <!-- ─── QUIZ ─── -->
-  <div class="section" id="section-quiz">
-    <div id="quizArea">
-      <div class="empty-state">
-        <div class="icon">🧪</div>
-        <h3>還沒有測驗題目</h3>
-        <p>先用「掃描」功能上傳書頁</p>
-      </div>
-    </div>
+  <!-- ── Quiz ── -->
+  <div class="section" id="sec-quiz">
+    <div class="page-title">🧪 Quiz 測驗</div>
+    <div id="quizArea"></div>
   </div>
-
 </main>
+
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="nav('scan',this)">
+    <span class="nav-icon">📸</span><span class="nav-label">掃描</span>
+  </button>
+  <button class="nav-item" onclick="nav('cards',this)">
+    <span class="nav-icon">🃏</span><span class="nav-label">單字卡</span>
+  </button>
+  <button class="nav-item" onclick="nav('fill',this)">
+    <span class="nav-icon">✏️</span><span class="nav-label">填空</span>
+  </button>
+  <button class="nav-item" onclick="nav('pron',this)">
+    <span class="nav-icon">🔊</span><span class="nav-label">發音</span>
+  </button>
+  <button class="nav-item" onclick="nav('grammar',this)">
+    <span class="nav-icon">📝</span><span class="nav-label">文法</span>
+  </button>
+  <button class="nav-item" onclick="nav('quiz',this)">
+    <span class="nav-icon">🧪</span><span class="nav-label">Quiz</span>
+  </button>
+</nav>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ── STATE ──
-let vocab = []; // {kr, reading, zh, status:'new'|'again'|'good'}
-let grammarNotes = []; // {title, kr, pattern, examples:[{kr,zh}]}
-let sentences = []; // {kr, zh} for fill-in
-let currentCardIdx = 0;
-let filteredVocab = [];
-let quizQ = [];
-let quizIdx = 0;
-let quizScore = 0;
+// ── STORAGE ──
+function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+function load(key, def) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch { return def; } }
+
+// ── STATE (loaded from localStorage) ──
+let vocab = load('vocab', []);       // {kr, reading, zh, status}
+let grammar = load('grammar', []);   // {title, kr, pattern, examples}
+let sentences = load('sentences', []); // {kr, zh}
 let imageBase64 = null;
+let filteredVocab = [...vocab];
+let cardIdx = 0;
+let quizQs = [], quizIdx = 0, quizScore = 0;
 
 // ── NAV ──
-function showSection(name) {
+function nav(name, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('section-' + name).classList.add('active');
-  event.target.classList.add('active');
-
-  if (name === 'cards') renderCards();
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'cards') { filteredVocab = [...vocab]; cardIdx = 0; renderCard(); }
   if (name === 'fill') renderFill();
   if (name === 'pron') renderPron();
   if (name === 'grammar') renderGrammar();
-  if (name === 'quiz') initQuiz();
+  if (name === 'quiz') startQuiz();
+  updateBadge();
 }
 
-// ── FILE HANDLING ──
+function updateBadge() {
+  document.getElementById('totalBadge').textContent = vocab.length + ' 個單字';
+}
+updateBadge();
+
+// ── FILE ──
 function handleFile(e) {
-  const file = e.target.files[0];
-  if (!file) return;
+  const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
-  reader.onload = evt => {
-    const dataUrl = evt.target.result;
-    imageBase64 = dataUrl.split(',')[1];
-    document.getElementById('previewImg').src = dataUrl;
-    document.getElementById('uploadPreview').classList.add('show');
-    document.getElementById('aiResult').classList.remove('show');
+  reader.onload = ev => {
+    imageBase64 = ev.target.result.split(',')[1];
+    document.getElementById('previewImg').src = ev.target.result;
+    document.getElementById('previewArea').style.display = 'block';
+    document.getElementById('resultBox').classList.remove('show');
   };
   reader.readAsDataURL(file);
+  e.target.value = '';
 }
 
-// drag & drop
-const ua = document.getElementById('uploadArea');
-ua.addEventListener('dragover', e => { e.preventDefault(); ua.classList.add('dragover'); });
-ua.addEventListener('dragleave', () => ua.classList.remove('dragover'));
-ua.addEventListener('drop', e => {
-  e.preventDefault(); ua.classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith('image/')) {
-    const reader = new FileReader();
-    reader.onload = ev => {
-      imageBase64 = ev.target.result.split(',')[1];
-      document.getElementById('previewImg').src = ev.target.result;
-      document.getElementById('uploadPreview').classList.add('show');
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
-// ── API CONFIG ──
-function getApiKey() {
-  return localStorage.getItem('geminiApiKey') || '';
-}
-function setApiKey(key) {
-  localStorage.setItem('geminiApiKey', key);
-}
-
-function showProxySettings() {
-  const current = getApiKey();
-  const key = prompt('請輸入你的 Google Gemini API Key：\n\n免費取得：aistudio.google.com → Get API Key', current ? '（已設定，輸入新的來更換）' : '');
-  if (key !== null && key.trim() && key !== '（已設定，輸入新的來更換）') {
-    setApiKey(key.trim());
-    showToast('✅ API Key 已儲存');
+// ── API ──
+function getKey() { return localStorage.getItem('geminiKey') || ''; }
+function showApiSettings() {
+  const cur = getKey();
+  const k = prompt('Gemini API Key\n免費取得：aistudio.google.com → Get API Key', cur ? '（已設定，輸入新的換掉）' : '');
+  if (k && k.trim() && k !== '（已設定，輸入新的換掉）') {
+    localStorage.setItem('geminiKey', k.trim());
+    toast('✅ API Key 已儲存');
   }
 }
 
-// ── PROCESS IMAGE ──
-async function processImage() {
-  if (!imageBase64) return;
-
-  const apiKey = getApiKey();
-  if (!apiKey) {
-    const go = confirm('需要設定 Gemini API Key 才能使用掃描功能。\n\n點「確定」前往設定。');
-    if (go) showProxySettings();
+// ── ANALYZE ──
+async function analyze() {
+  const key = getKey();
+  if (!key) {
+    if (confirm('需要設定 Gemini API Key。\n前往設定？')) showApiSettings();
     return;
   }
-
-  document.getElementById('processBtn').disabled = true;
+  if (!imageBase64) return;
+  document.getElementById('analyzeBtn').disabled = true;
   document.getElementById('loadingDiv').classList.add('show');
-  document.getElementById('aiResult').classList.remove('show');
+  document.getElementById('resultBox').classList.remove('show');
 
-  const prompt = `你是一個韓語教學助手。請仔細分析這張韓語學習書頁的圖片，提取所有學習內容。
-
-請嚴格以以下JSON格式回應，不要有任何markdown或額外文字：
-{
-  "vocab": [
-    {"kr": "韓文單字", "reading": "romanization或注音", "zh": "中文翻譯"}
-  ],
-  "grammar": [
-    {
-      "title": "文法名稱（中文）",
-      "kr": "韓文文法形式",
-      "pattern": "使用方式說明",
-      "examples": [
-        {"kr": "韓文例句", "zh": "中文翻譯"}
-      ]
-    }
-  ],
-  "sentences": [
-    {"kr": "完整韓文句子", "zh": "中文翻譯"}
-  ],
-  "notes": "其他重要文法說明（純文字）"
-}
-
-如果圖片中沒有某類內容，給空陣列。vocab 至少嘗試提取所有出現的韓文單字。`;
+  const prompt = `你是韓語教學助手。分析這張韓語書頁圖片，提取所有學習內容。
+嚴格以JSON回應，不要markdown：
+{"vocab":[{"kr":"韓文","reading":"羅馬拼音","zh":"中文"}],"grammar":[{"title":"文法名稱","kr":"韓文形式","pattern":"說明","examples":[{"kr":"例句","zh":"翻譯"}]}],"sentences":[{"kr":"句子","zh":"翻譯"}],"notes":"文法備注"}`;
 
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{
-            parts: [
-              { inline_data: { mime_type: 'image/jpeg', data: imageBase64 } },
-              { text: prompt }
-            ]
-          }],
+          contents: [{ parts: [
+            { inline_data: { mime_type: 'image/jpeg', data: imageBase64 } },
+            { text: prompt }
+          ]}],
           generationConfig: { temperature: 0.1 }
         })
       }
     );
-
-    const data = await response.json();
+    const data = await res.json();
     if (data.error) throw new Error(data.error.message);
-
     const text = data.candidates[0].content.parts[0].text;
-    let parsed;
-    try {
-      const clean = text.replace(/```json|```/g, '').trim();
-      parsed = JSON.parse(clean);
-    } catch(e) {
-      throw new Error('無法解析AI回應');
-    }
-
-    renderUploadResult(parsed);
-
+    const clean = text.replace(/```json|```/g,'').trim();
+    renderResult(JSON.parse(clean));
   } catch(err) {
-    showToast('⚠️ 分析失敗：' + err.message);
+    toast('⚠️ ' + err.message);
   } finally {
-    document.getElementById('processBtn').disabled = false;
+    document.getElementById('analyzeBtn').disabled = false;
     document.getElementById('loadingDiv').classList.remove('show');
   }
 }
 
-function renderUploadResult(data) {
-  // VOCAB
-  const vr = document.getElementById('vocabResult');
-  const vb = document.getElementById('vocabBody');
-  if (data.vocab && data.vocab.length > 0) {
-    vb.innerHTML = data.vocab.map((v,i) => `
-      <div class="vocab-row">
-        <div class="vocab-kr">${v.kr}</div>
-        <div class="vocab-reading">${v.reading||''}</div>
-        <div class="vocab-zh">${v.zh}</div>
-        <button class="tts-btn" onclick="speak('${v.kr.replace(/'/g,"\\'")}')">🔊</button>
-      </div>
-    `).join('');
-    vr.style.display = 'block';
-    window._pendingVocab = data.vocab;
-  } else {
-    vr.style.display = 'none';
-    window._pendingVocab = [];
-  }
+// pending data from scan
+let _pVocab = [], _pGrammar = [], _pSentences = [];
 
-  // GRAMMAR
-  const gr = document.getElementById('grammarResult');
-  const gb = document.getElementById('grammarBody');
-  if (data.notes && data.notes.trim()) {
-    gb.textContent = data.notes;
-    gr.style.display = 'block';
-  } else {
-    gr.style.display = 'none';
-  }
-  window._pendingGrammar = data.grammar || [];
+function renderResult(d) {
+  _pVocab = d.vocab || [];
+  _pGrammar = d.grammar || [];
+  _pSentences = d.sentences || [];
 
-  // EXAMPLES
-  const er = document.getElementById('exampleResult');
-  const eb = document.getElementById('exampleBody');
-  if (data.sentences && data.sentences.length > 0) {
-    eb.innerHTML = data.sentences.map(s => `
-      <div class="vocab-row">
+  // vocab
+  const rv = document.getElementById('resVocab');
+  const rb = document.getElementById('resVocabBody');
+  if (_pVocab.length) {
+    rb.innerHTML = _pVocab.map(v => `
+      <div class="vrow">
+        <div class="vrow-kr">${v.kr}</div>
+        <div class="vrow-rom">${v.reading||''}</div>
+        <div class="vrow-zh">${v.zh}</div>
+        <button class="tts-btn" onclick="speak('${esc(v.kr)}')">🔊</button>
+      </div>`).join('');
+    rv.style.display = 'block';
+  } else rv.style.display = 'none';
+
+  // notes
+  const rn = document.getElementById('resNotes');
+  if (d.notes && d.notes.trim()) {
+    document.getElementById('resNotesBody').textContent = d.notes;
+    rn.style.display = 'block';
+  } else rn.style.display = 'none';
+
+  // sentences
+  const rs = document.getElementById('resSentences');
+  const rsb = document.getElementById('resSentBody');
+  if (_pSentences.length) {
+    rsb.innerHTML = _pSentences.map(s => `
+      <div class="vrow">
         <div style="flex:1">
-          <div class="vocab-kr" style="font-size:15px">${s.kr}</div>
-          <div class="vocab-zh">${s.zh}</div>
+          <div style="font-family:'Noto Sans KR';font-size:20px;font-weight:600;margin-bottom:4px">${s.kr}</div>
+          <div style="font-size:16px;color:var(--text2)">${s.zh}</div>
         </div>
-        <button class="tts-btn" onclick="speak('${s.kr.replace(/'/g,"\\'")}')">🔊</button>
-      </div>
-    `).join('');
-    er.style.display = 'block';
-    window._pendingSentences = data.sentences;
-  } else {
-    er.style.display = 'none';
-    window._pendingSentences = [];
-  }
+        <button class="tts-btn" onclick="speak('${esc(s.kr)}')">🔊</button>
+      </div>`).join('');
+    rs.style.display = 'block';
+  } else rs.style.display = 'none';
 
-  document.getElementById('aiResult').classList.add('show');
+  document.getElementById('resultBox').classList.add('show');
 }
 
 function saveAll() {
-  const pv = window._pendingVocab || [];
-  const pg = window._pendingGrammar || [];
-  const ps = window._pendingSentences || [];
-
-  pv.forEach(v => {
-    if (!vocab.find(x => x.kr === v.kr)) {
-      vocab.push({ ...v, status: 'new' });
-    }
+  let added = 0;
+  _pVocab.forEach(v => {
+    if (!vocab.find(x => x.kr === v.kr)) { vocab.push({...v, status:'new'}); added++; }
   });
-  pg.forEach(g => {
-    if (!grammarNotes.find(x => x.title === g.title)) {
-      grammarNotes.push(g);
-    }
+  _pGrammar.forEach(g => {
+    if (!grammar.find(x => x.title === g.title)) grammar.push(g);
   });
-  ps.forEach(s => {
-    if (!sentences.find(x => x.kr === s.kr)) {
-      sentences.push(s);
-    }
+  _pSentences.forEach(s => {
+    if (!sentences.find(x => x.kr === s.kr)) sentences.push(s);
   });
-
-  showToast(`✅ 已儲存 ${pv.length} 個單字、${pg.length} 條文法、${ps.length} 個例句`);
+  save('vocab', vocab);
+  save('grammar', grammar);
+  save('sentences', sentences);
+  toast(`✅ 新增 ${added} 個單字，共 ${vocab.length} 個`);
+  updateBadge();
 }
 
 // ── FLASHCARDS ──
-function filterCards(filter, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+function setFilter(f, btn) {
+  document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  if (filter === 'all') filteredVocab = [...vocab];
-  else filteredVocab = vocab.filter(v => v.status === filter);
-  currentCardIdx = 0;
-  renderCards();
+  filteredVocab = f === 'all' ? [...vocab] : vocab.filter(v => v.status === f);
+  cardIdx = 0; renderCard();
+}
+function shuffleVocab(btn) {
+  document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filteredVocab = [...vocab].sort(() => Math.random()-0.5);
+  cardIdx = 0; renderCard();
 }
 
-function shuffleCards(btn) {
-  filteredVocab = [...vocab].sort(() => Math.random() - 0.5);
-  currentCardIdx = 0;
-  renderCards();
-}
-
-function renderCards() {
-  if (filteredVocab.length === 0) filteredVocab = [...vocab];
-  const area = document.getElementById('flashcardArea');
-  if (vocab.length === 0) {
-    area.innerHTML = `<div class="empty-state"><div class="icon">🃏</div><h3>還沒有單字卡</h3><p>先用「掃描」功能上傳書頁</p></div>`;
-    return;
+function renderCard() {
+  const area = document.getElementById('cardArea');
+  const cnt = document.getElementById('cardsCount');
+  if (!vocab.length) {
+    area.innerHTML = emptyState('🃏','還沒有單字卡','先用掃描功能上傳書頁');
+    cnt.textContent = ''; return;
   }
-  if (filteredVocab.length === 0) {
-    area.innerHTML = `<div class="empty-state"><div class="icon">🎉</div><h3>這個分類沒有單字</h3></div>`;
-    return;
+  if (!filteredVocab.length) {
+    area.innerHTML = emptyState('🎉','這個分類沒有單字','');
+    cnt.textContent = ''; return;
   }
-  const v = filteredVocab[currentCardIdx];
+  cnt.textContent = `${cardIdx+1} / ${filteredVocab.length}`;
+  const v = filteredVocab[cardIdx];
   area.innerHTML = `
-    <div class="flashcard-counter">${currentCardIdx + 1} / ${filteredVocab.length}</div>
+    <div class="card-counter">${cardIdx+1} / ${filteredVocab.length}</div>
     <div class="card-scene" onclick="flipCard(this)">
-      <div class="card-inner" id="cardInner">
+      <div class="card-inner">
         <div class="card-face front">
-          <div class="card-tag">韓文</div>
+          <div class="card-label">韓文</div>
           <div class="card-kr">${v.kr}</div>
-          <div class="card-reading">${v.reading||''}</div>
-          <div class="card-hint">點擊翻面</div>
+          <div class="card-rom">${v.reading||''}</div>
+          <div class="card-tap">點擊翻面</div>
         </div>
         <div class="card-face back">
-          <div class="card-tag">中文</div>
+          <div class="card-label">中文</div>
           <div class="card-zh">${v.zh}</div>
-          <div class="card-kr" style="font-size:22px">${v.kr}</div>
-          <div class="card-reading">${v.reading||''}</div>
+          <div class="card-kr" style="font-size:36px">${v.kr}</div>
+          <div class="card-rom">${v.reading||''}</div>
         </div>
       </div>
     </div>
-    <div class="card-actions">
-      <button class="card-action-btn again" onclick="markCard('again')">❌ 再練習</button>
-      <button class="card-action-btn speak" onclick="speak('${v.kr.replace(/'/g,"\\'")}')">🔊 發音</button>
-      <button class="card-action-btn good" onclick="markCard('good')">✅ 掌握了</button>
-    </div>
-  `;
+    <div class="card-btns">
+      <button class="card-btn again" onclick="markCard('again')">❌ 再練</button>
+      <button class="card-btn speak" onclick="speak('${esc(v.kr)}')">🔊 發音</button>
+      <button class="card-btn good" onclick="markCard('good')">✅ 掌握</button>
+    </div>`;
 }
 
-function flipCard(el) {
-  el.querySelector('.card-inner').classList.toggle('flipped');
-}
+function flipCard(el) { el.querySelector('.card-inner').classList.toggle('flipped'); }
 
 function markCard(status) {
-  if (filteredVocab.length === 0) return;
-  const v = filteredVocab[currentCardIdx];
+  if (!filteredVocab.length) return;
+  const v = filteredVocab[cardIdx];
   const orig = vocab.find(x => x.kr === v.kr);
-  if (orig) orig.status = status;
-  currentCardIdx = (currentCardIdx + 1) % filteredVocab.length;
-  renderCards();
+  if (orig) { orig.status = status; save('vocab', vocab); }
+  cardIdx = (cardIdx+1) % filteredVocab.length;
+  renderCard();
 }
 
-// ── FILL-IN ──
+// ── FILL ──
 function renderFill() {
   const area = document.getElementById('fillArea');
-  const items = [...sentences, ...vocab.map(v => ({ kr: `${v.kr}의 뜻은 「${v.zh}」입니다`, zh: `${v.kr} 的意思是「${v.zh}」` }))];
-  if (items.length === 0) {
-    area.innerHTML = `<div class="empty-state"><div class="icon">✏️</div><h3>還沒有練習題</h3><p>先用「掃描」功能上傳書頁</p></div>`;
-    return;
-  }
-  area.innerHTML = items.map((s, i) => {
-    // blank out a random Korean word in the sentence
+  const items = [...sentences];
+  vocab.forEach(v => items.push({ kr: `${v.kr}의 뜻은 "${v.zh}"입니다`, zh: `「${v.kr}」的意思是「${v.zh}」` }));
+  if (!items.length) { area.innerHTML = emptyState('✏️','還沒有練習題','先用掃描功能上傳書頁'); return; }
+  const picked = items.sort(()=>Math.random()-0.5).slice(0, Math.min(15, items.length));
+  area.innerHTML = picked.map((s,i) => {
     const words = s.kr.split(/\s+/);
-    const blankIdx = Math.floor(Math.random() * words.length);
-    const answer = words[blankIdx];
-    const display = words.map((w, wi) =>
-      wi === blankIdx
-        ? `<input class="fill-blank" id="fill-${i}" data-answer="${answer}" placeholder="?" oninput="autoCheck(${i})">`
-        : w
-    ).join(' ');
-    return `
-      <div class="fill-card">
-        <div class="fill-q">${display}</div>
-        <div class="fill-hint">${s.zh}</div>
-        <div class="fill-answer-reveal" id="reveal-${i}">正確答案：<strong>${answer}</strong></div>
-        <button class="check-btn" onclick="checkFill(${i})">確認</button>
-      </div>
-    `;
+    const bi = Math.floor(Math.random() * words.length);
+    const ans = words[bi];
+    const display = words.map((w,wi) => wi===bi
+      ? `<input class="fill-input" id="fi${i}" data-ans="${esc(ans)}" placeholder="？">`
+      : w).join(' ');
+    return `<div class="fill-card">
+      <div class="fill-q">${display}</div>
+      <div class="fill-hint">${s.zh}</div>
+      <div class="fill-reveal" id="fr${i}">✅ 正確答案：<strong>${ans}</strong></div>
+      <button class="confirm-btn" onclick="checkFill(${i})">確認</button>
+    </div>`;
   }).join('');
 }
 
-function autoCheck(i) {
-  const input = document.getElementById('fill-' + i);
-  input.classList.remove('correct', 'wrong');
-}
-
 function checkFill(i) {
-  const input = document.getElementById('fill-' + i);
-  const answer = input.dataset.answer;
-  const val = input.value.trim();
-  const reveal = document.getElementById('reveal-' + i);
-  if (val === answer) {
-    input.classList.add('correct');
-    input.classList.remove('wrong');
-    showToast('🎉 正確！');
-  } else {
-    input.classList.add('wrong');
-    input.classList.remove('correct');
-    reveal.classList.add('show');
-    showToast('❌ 再試試看');
-  }
+  const inp = document.getElementById('fi'+i);
+  const ans = inp.dataset.ans;
+  inp.classList.remove('correct','wrong');
+  if (inp.value.trim() === ans) { inp.classList.add('correct'); toast('🎉 正確！'); }
+  else { inp.classList.add('wrong'); document.getElementById('fr'+i).classList.add('show'); toast('❌ 再試試看'); }
 }
 
-// ── PRONUNCIATION ──
+// ── PRON ──
 function renderPron() {
   const area = document.getElementById('pronArea');
-  if (vocab.length === 0) {
-    area.innerHTML = `<div class="empty-state"><div class="icon">🔊</div><h3>還沒有單字</h3><p>先用「掃描」功能上傳書頁</p></div>`;
-    return;
-  }
+  if (!vocab.length) { area.innerHTML = emptyState('🔊','還沒有單字','先用掃描功能上傳書頁'); return; }
   area.innerHTML = vocab.map(v => `
     <div class="pron-card">
       <div class="pron-kr">${v.kr}</div>
       <div class="pron-info">
-        <div class="pron-reading">${v.reading||''}</div>
+        <div class="pron-rom">${v.reading||''}</div>
         <div class="pron-zh">${v.zh}</div>
       </div>
-      <div class="pron-btns">
-        <button class="pron-play-btn" onclick="speak('${v.kr.replace(/'/g,"\\'")}')">▶</button>
-      </div>
-    </div>
-  `).join('');
+      <button class="pron-play" onclick="speak('${esc(v.kr)}')">▶</button>
+    </div>`).join('');
 }
 
 // ── GRAMMAR ──
 function renderGrammar() {
   const area = document.getElementById('grammarArea');
-  if (grammarNotes.length === 0) {
-    area.innerHTML = `<div class="empty-state"><div class="icon">📝</div><h3>還沒有文法筆記</h3><p>先用「掃描」功能上傳書頁</p></div>`;
-    return;
-  }
-  area.innerHTML = grammarNotes.map((g, i) => `
+  if (!grammar.length) { area.innerHTML = emptyState('📝','還沒有文法筆記','先用掃描功能上傳書頁'); return; }
+  area.innerHTML = grammar.map((g,i) => `
     <div class="grammar-card">
-      <div class="grammar-header" onclick="toggleGrammar(${i})">
-        <div>
-          <div class="grammar-title">${g.title||''}</div>
-          <div class="grammar-kr">${g.kr||''}</div>
+      <div class="grammar-hdr" onclick="toggleG(${i})">
+        <div class="grammar-hdr-text">
+          <div class="grammar-name">${g.title||''}</div>
+          <div class="grammar-kr-form">${g.kr||''}</div>
         </div>
-        <span id="garrow-${i}">▼</span>
+        <span id="ga${i}">▼</span>
       </div>
-      <div class="grammar-body" id="gbody-${i}">
-        ${g.pattern ? `<div class="grammar-pattern">${g.pattern}</div>` : ''}
-        ${g.examples && g.examples.length ? `
-          <ul class="grammar-examples">
-            ${g.examples.map(ex => `
-              <li>
-                <div class="kr">${ex.kr} <button class="tts-btn" onclick="speak('${ex.kr.replace(/'/g,"\\'")}')">🔊</button></div>
-                <div class="zh">${ex.zh}</div>
-              </li>
-            `).join('')}
-          </ul>
-        ` : ''}
+      <div class="grammar-body" id="gb${i}">
+        ${g.pattern?`<div class="grammar-pattern">${g.pattern}</div>`:''}
+        ${g.examples?.length?`<ul class="grammar-ex">${g.examples.map(ex=>`
+          <li>
+            <div class="grammar-ex-kr">${ex.kr} <button class="tts-btn" onclick="speak('${esc(ex.kr)}')">🔊</button></div>
+            <div class="grammar-ex-zh">${ex.zh}</div>
+          </li>`).join('')}</ul>`:''}
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
-
-function toggleGrammar(i) {
-  const body = document.getElementById('gbody-' + i);
-  const arrow = document.getElementById('garrow-' + i);
-  body.classList.toggle('open');
-  arrow.textContent = body.classList.contains('open') ? '▲' : '▼';
+function toggleG(i) {
+  const b = document.getElementById('gb'+i);
+  b.classList.toggle('open');
+  document.getElementById('ga'+i).textContent = b.classList.contains('open') ? '▲' : '▼';
 }
 
 // ── QUIZ ──
-function initQuiz() {
+function startQuiz() {
   const area = document.getElementById('quizArea');
-  if (vocab.length < 2) {
-    area.innerHTML = `<div class="empty-state"><div class="icon">🧪</div><h3>需要至少 2 個單字才能測驗</h3><p>先用「掃描」功能上傳書頁</p></div>`;
-    return;
-  }
-  quizQ = generateQuizQuestions();
-  quizIdx = 0;
-  quizScore = 0;
-  renderQuizQ();
-}
-
-function generateQuizQuestions() {
-  const shuffled = [...vocab].sort(() => Math.random() - 0.5).slice(0, Math.min(10, vocab.length));
-  return shuffled.map(v => {
-    const wrongs = vocab.filter(x => x.kr !== v.kr).sort(() => Math.random() - 0.5).slice(0, 3).map(x => x.zh);
-    const opts = [v.zh, ...wrongs].sort(() => Math.random() - 0.5);
-    return { v, opts, correct: v.zh };
+  if (vocab.length < 4) { area.innerHTML = emptyState('🧪','需要至少 4 個單字','先用掃描功能上傳書頁'); return; }
+  quizQs = [...vocab].sort(()=>Math.random()-0.5).slice(0,Math.min(10,vocab.length)).map(v => {
+    const wrongs = vocab.filter(x=>x.kr!==v.kr).sort(()=>Math.random()-0.5).slice(0,3).map(x=>x.zh);
+    return { v, opts: [v.zh,...wrongs].sort(()=>Math.random()-0.5), correct: v.zh };
   });
+  quizIdx = 0; quizScore = 0; renderQuiz();
 }
 
-function renderQuizQ() {
+function renderQuiz() {
   const area = document.getElementById('quizArea');
-  if (quizIdx >= quizQ.length) {
-    const pct = Math.round(quizScore / quizQ.length * 100);
-    area.innerHTML = `
-      <div class="quiz-score">
-        <div class="quiz-score-num">${quizScore}/${quizQ.length}</div>
-        <div class="quiz-score-label">正確率 ${pct}%</div>
-        <br>
-        <button class="check-btn" onclick="initQuiz()">🔄 再測一次</button>
-      </div>`;
-    return;
+  if (quizIdx >= quizQs.length) {
+    const pct = Math.round(quizScore/quizQs.length*100);
+    area.innerHTML = `<div class="score-card">
+      <div class="score-num">${quizScore}/${quizQs.length}</div>
+      <div class="score-label">正確率 ${pct}%</div>
+      <button class="retry-btn" onclick="startQuiz()">🔄 再測一次</button>
+    </div>`; return;
   }
-  const q = quizQ[quizIdx];
-  const progress = (quizIdx / quizQ.length) * 100;
+  const q = quizQs[quizIdx];
+  const pct = quizIdx/quizQs.length*100;
   area.innerHTML = `
-    <div class="quiz-header">
-      <div style="font-size:14px;color:var(--text-secondary)">第 ${quizIdx+1} 題 / 共 ${quizQ.length} 題</div>
-      <div style="font-size:14px;color:var(--text-secondary)">✅ ${quizScore}</div>
+    <div class="quiz-meta">
+      <span>第 ${quizIdx+1} 題 / ${quizQs.length} 題</span>
+      <span>✅ ${quizScore}</span>
     </div>
-    <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${progress}%"></div></div>
-    <div class="quiz-q">
-      <div class="quiz-question-text">這個韓文的意思是？</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="quiz-word-card">
+      <div class="quiz-prompt">這個韓文的意思是？</div>
       <div class="quiz-word">${q.v.kr}</div>
-      ${q.v.reading ? `<div style="font-size:14px;color:var(--text-muted);margin-top:6px">${q.v.reading}</div>` : ''}
+      ${q.v.reading?`<div class="quiz-rom">${q.v.reading}</div>`:''}
     </div>
-    <div class="quiz-options">
-      ${q.opts.map(opt => `
-        <button class="quiz-opt" onclick="answerQuiz('${opt.replace(/'/g,"\\'")}', '${q.correct.replace(/'/g,"\\'")}', this)">${opt}</button>
-      `).join('')}
-    </div>
-  `;
+    <div class="quiz-opts">
+      ${q.opts.map(o=>`<button class="quiz-opt" onclick="answerQuiz('${esc(o)}','${esc(q.correct)}',this)">${o}</button>`).join('')}
+    </div>`;
 }
 
 function answerQuiz(chosen, correct, btn) {
-  const btns = document.querySelectorAll('.quiz-opt');
-  btns.forEach(b => {
+  document.querySelectorAll('.quiz-opt').forEach(b => {
     b.disabled = true;
     if (b.textContent.trim() === correct) b.classList.add('correct');
   });
-  if (chosen === correct) {
-    btn.classList.add('correct');
-    quizScore++;
-    showToast('🎉 正確！');
-  } else {
-    btn.classList.add('wrong');
-    showToast('❌ 答錯了');
-  }
-  setTimeout(() => {
-    quizIdx++;
-    renderQuizQ();
-  }, 1200);
+  if (chosen === correct) { quizScore++; toast('🎉 正確！'); }
+  else { btn.classList.add('wrong'); toast('❌ 答錯了'); }
+  setTimeout(() => { quizIdx++; renderQuiz(); }, 1200);
 }
 
 // ── TTS ──
 function speak(text) {
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = 'ko-KR';
-  utter.rate = 0.85;
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(utter);
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ko-KR'; u.rate = 0.85;
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
 }
 
-// ── TOAST ──
-function showToast(msg) {
+// ── UTILS ──
+function esc(s) { return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+function toast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
-
-// init
-filteredVocab = [...vocab];
+function emptyState(icon, title, sub) {
+  return `<div class="empty"><div class="eicon">${icon}</div><h3>${title}</h3><p>${sub}</p></div>`;
+}
 </script>
 
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/korean-study/sw.js', { scope: '/korean-study/' }).catch(() => {});
-  });
+  navigator.serviceWorker.register('/korean-study/sw.js', { scope: '/korean-study/' }).catch(()=>{});
 }
 </script>
 </body>
