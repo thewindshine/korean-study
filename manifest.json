@@ -5,8 +5,8 @@
   "start_url": "/korean-study/",
   "scope": "/korean-study/",
   "display": "standalone",
-  "background_color": "#F7F6F3",
-  "theme_color": "#D4522A",
+  "background_color": "#EEF4FC",
+  "theme_color": "#1B4F9C",
   "orientation": "portrait",
   "icons": [
     {
