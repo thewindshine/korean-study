@@ -187,6 +187,7 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 .vrow-kr { font-family: 'Noto Sans KR'; font-size: 25px; font-weight: 800; min-width: 90px; }
 .vrow-rom { font-size: 17px; color: var(--muted); min-width: 80px; }
 .vrow-zh { font-size: 21px; flex: 1; }
+.vrow-en { font-size: 16px; color: var(--muted); font-style: italic; margin-top: 2px; }
 .tts-btn { background: none; border: none; font-size: 25px; cursor: pointer; padding: 4px; }
 
 /* ── CARDS ── */
@@ -226,6 +227,7 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 .card-kr { font-family: 'Noto Sans KR'; font-size: 57px; font-weight: 800; line-height: 1.1; }
 .card-rom { font-size: 22px; color: var(--text2); }
 .card-zh { font-size: 35px; font-weight: 800; color: var(--accent); }
+.card-en { font-size: 19px; color: var(--text2); font-style: italic; }
 .card-tap { font-size: 19px; color: var(--muted); }
 
 .card-btns { display: flex; gap: 12px; }
@@ -256,7 +258,8 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 }
 .fill-input.correct { border-color: var(--green); color: var(--green); }
 .fill-input.wrong { border-color: #C62828; color: #C62828; }
-.fill-hint { font-size: 20px; color: var(--muted); margin-bottom: 12px; }
+.fill-hint { font-size: 20px; color: var(--muted); margin-bottom: 4px; }
+.fill-hint-en { font-size: 16px; color: var(--muted); font-style: italic; margin-bottom: 12px; }
 .fill-reveal { font-size: 20px; color: var(--text2); display: none; margin-bottom: 10px; }
 .fill-reveal.show { display: block; }
 .confirm-btn {
@@ -275,6 +278,7 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 .pron-info { flex: 1; }
 .pron-rom { font-size: 19px; color: var(--muted); }
 .pron-zh { font-size: 24px; font-weight: 700; }
+.pron-en { font-size: 17px; color: var(--muted); font-style: italic; margin-top: 2px; }
 .pron-play {
   width: 52px; height: 52px; border-radius: 50%;
   background: var(--blue); color: white; border: none;
@@ -308,6 +312,7 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 .grammar-ex li:last-child { border-bottom: none; }
 .grammar-ex-kr { font-family: 'Noto Sans KR'; font-size: 24px; margin-bottom: 4px; }
 .grammar-ex-zh { font-size: 20px; color: var(--text2); }
+.grammar-ex-en { font-size: 16px; color: var(--muted); font-style: italic; margin-top: 2px; }
 
 /* ── QUIZ ── */
 .quiz-meta { display: flex; justify-content: space-between; margin-bottom: 12px; }
@@ -566,9 +571,9 @@ async function analyze() {
   document.getElementById('loadingDiv').classList.add('show');
   document.getElementById('resultBox').classList.remove('show');
 
-  const prompt = `你是韓語教學助手。分析這張韓語書頁圖片，提取所有學習內容。
+  const prompt = `你是韓語教學助手。分析這張韓語書頁圖片，提取所有學習內容。每個翻譯都同時提供繁體中文(zh)與英文(en)。
 嚴格以JSON回應，不要markdown：
-{"vocab":[{"kr":"韓文","reading":"羅馬拼音","zh":"中文"}],"grammar":[{"title":"文法名稱","kr":"韓文形式","pattern":"說明","examples":[{"kr":"例句","zh":"翻譯"}]}],"sentences":[{"kr":"句子","zh":"翻譯"}],"notes":"文法備注"}`;
+{"vocab":[{"kr":"韓文","reading":"羅馬拼音","zh":"中文翻譯","en":"English translation"}],"grammar":[{"title":"文法名稱","kr":"韓文形式","pattern":"說明","examples":[{"kr":"例句","zh":"中文翻譯","en":"English translation"}]}],"sentences":[{"kr":"句子","zh":"中文翻譯","en":"English translation"}],"notes":"文法備注"}`;
 
   try {
     const res = await fetch(
@@ -614,7 +619,10 @@ function renderResult(d) {
       <div class="vrow">
         <div class="vrow-kr">${v.kr}</div>
         <div class="vrow-rom">${v.reading||''}</div>
-        <div class="vrow-zh">${v.zh}</div>
+        <div style="flex:1">
+          <div class="vrow-zh">${v.zh}</div>
+          ${v.en?`<div class="vrow-en">${v.en}</div>`:''}
+        </div>
         <button class="tts-btn" onclick="speak('${esc(v.kr)}')">🔊</button>
       </div>`).join('');
     rv.style.display = 'block';
@@ -636,6 +644,7 @@ function renderResult(d) {
         <div style="flex:1">
           <div style="font-family:'Noto Sans KR';font-size:20px;font-weight:600;margin-bottom:4px">${s.kr}</div>
           <div style="font-size:16px;color:var(--text2)">${s.zh}</div>
+          ${s.en?`<div class="vrow-en">${s.en}</div>`:''}
         </div>
         <button class="tts-btn" onclick="speak('${esc(s.kr)}')">🔊</button>
       </div>`).join('');
@@ -701,8 +710,9 @@ function renderCard() {
           <div class="card-tap">點擊翻面</div>
         </div>
         <div class="card-face back">
-          <div class="card-label">中文</div>
+          <div class="card-label">中文 / English</div>
           <div class="card-zh">${v.zh}</div>
+          ${v.en?`<div class="card-en">${v.en}</div>`:''}
           <div class="card-kr" style="font-size:36px">${v.kr}</div>
           <div class="card-rom">${v.reading||''}</div>
         </div>
@@ -730,7 +740,11 @@ function markCard(status) {
 function renderFill() {
   const area = document.getElementById('fillArea');
   const items = [...sentences];
-  vocab.forEach(v => items.push({ kr: `${v.kr}의 뜻은 "${v.zh}"입니다`, zh: `「${v.kr}」的意思是「${v.zh}」` }));
+  vocab.forEach(v => items.push({
+    kr: `${v.kr}의 뜻은 "${v.zh}"입니다`,
+    zh: `「${v.kr}」的意思是「${v.zh}」`,
+    en: v.en ? `"${v.kr}" means "${v.en}"` : ''
+  }));
   if (!items.length) { area.innerHTML = emptyState('✏️','還沒有練習題','先用掃描功能上傳書頁'); return; }
   const picked = items.sort(()=>Math.random()-0.5).slice(0, Math.min(15, items.length));
   area.innerHTML = picked.map((s,i) => {
@@ -743,6 +757,7 @@ function renderFill() {
     return `<div class="fill-card">
       <div class="fill-q">${display}</div>
       <div class="fill-hint">${s.zh}</div>
+      ${s.en?`<div class="fill-hint-en">${s.en}</div>`:''}
       <div class="fill-reveal" id="fr${i}">✅ 正確答案：<strong>${ans}</strong></div>
       <button class="confirm-btn" onclick="checkFill(${i})">確認</button>
     </div>`;
@@ -767,6 +782,7 @@ function renderPron() {
       <div class="pron-info">
         <div class="pron-rom">${v.reading||''}</div>
         <div class="pron-zh">${v.zh}</div>
+        ${v.en?`<div class="pron-en">${v.en}</div>`:''}
       </div>
       <button class="pron-play" onclick="speak('${esc(v.kr)}')">▶</button>
     </div>`).join('');
@@ -791,6 +807,7 @@ function renderGrammar() {
           <li>
             <div class="grammar-ex-kr">${ex.kr} <button class="tts-btn" onclick="speak('${esc(ex.kr)}')">🔊</button></div>
             <div class="grammar-ex-zh">${ex.zh}</div>
+            ${ex.en?`<div class="grammar-ex-en">${ex.en}</div>`:''}
           </li>`).join('')}</ul>`:''}
       </div>
     </div>`).join('');
