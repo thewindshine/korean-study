@@ -365,8 +365,9 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
   transform: translateX(-50%) translateY(60px);
   background: #0C2340; color: white;
   padding: 12px 24px; border-radius: 24px;
-  font-size: 20px; z-index: 999; transition: transform 0.25s;
-  white-space: nowrap; font-weight: 700;
+  font-size: 18px; z-index: 999; transition: transform 0.25s;
+  white-space: normal; font-weight: 700; text-align: center;
+  max-width: 88vw; box-sizing: border-box;
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
@@ -560,6 +561,59 @@ function showApiSettings() {
 }
 
 // ── ANALYZE ──
+async function callGeminiWithRetry(key, imgBase64, prompt) {
+  const maxRetries = 2; // only retries 503 (server temporarily busy)
+  let lastErr;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    if (attempt > 0) {
+      const loadP = document.querySelector('#loadingDiv p');
+      if (loadP) loadP.textContent = `伺服器忙碌中，重試第 ${attempt} 次……`;
+      await new Promise(r => setTimeout(r, 1500 * attempt));
+    }
+    let res;
+    try {
+      res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [
+              { inline_data: { mime_type: 'image/jpeg', data: imgBase64 } },
+              { text: prompt }
+            ]}],
+            generationConfig: { temperature: 0.1 }
+          })
+        }
+      );
+    } catch (networkErr) {
+      lastErr = new Error(networkErr.message);
+      lastErr.friendlyMessage = '⚠️ 網路連線失敗，請檢查網路後再試';
+      continue; // network hiccup, worth retrying
+    }
+
+    if (res.status === 429) {
+      const e = new Error('quota exceeded');
+      e.friendlyMessage = '⏳ 今日 AI 額度已用完，請稍後再試（免費額度通常隔天重置）';
+      throw e; // no point retrying, quota won't come back within seconds
+    }
+    if (res.status === 503) {
+      lastErr = new Error('service unavailable');
+      lastErr.friendlyMessage = '⚠️ Google 伺服器暫時忙碌，請稍後再試';
+      continue; // retry
+    }
+
+    const data = await res.json();
+    if (data.error) {
+      const e = new Error(data.error.message);
+      e.friendlyMessage = '⚠️ ' + data.error.message;
+      throw e;
+    }
+    return data; // success
+  }
+  throw lastErr;
+}
+
 async function analyze() {
   const key = getKey();
   if (!key) {
@@ -569,6 +623,8 @@ async function analyze() {
   if (!imageBase64) return;
   document.getElementById('analyzeBtn').disabled = true;
   document.getElementById('loadingDiv').classList.add('show');
+  const loadP0 = document.querySelector('#loadingDiv p');
+  if (loadP0) loadP0.textContent = 'AI 正在識別書頁內容……';
   document.getElementById('resultBox').classList.remove('show');
 
   const prompt = `你是韓語教學助手。分析這張韓語書頁圖片，提取所有學習內容。每個翻譯都同時提供繁體中文(zh)與英文(en)。
@@ -576,27 +632,12 @@ async function analyze() {
 {"vocab":[{"kr":"韓文","reading":"羅馬拼音","zh":"中文翻譯","en":"English translation"}],"grammar":[{"title":"文法名稱","kr":"韓文形式","pattern":"說明","examples":[{"kr":"例句","zh":"中文翻譯","en":"English translation"}]}],"sentences":[{"kr":"句子","zh":"中文翻譯","en":"English translation"}],"notes":"文法備注"}`;
 
   try {
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [
-            { inline_data: { mime_type: 'image/jpeg', data: imageBase64 } },
-            { text: prompt }
-          ]}],
-          generationConfig: { temperature: 0.1 }
-        })
-      }
-    );
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
+    const data = await callGeminiWithRetry(key, imageBase64, prompt);
     const text = data.candidates[0].content.parts[0].text;
     const clean = text.replace(/```json|```/g,'').trim();
     renderResult(JSON.parse(clean));
   } catch(err) {
-    toast('⚠️ ' + err.message);
+    toast(err.friendlyMessage || ('⚠️ ' + err.message));
   } finally {
     document.getElementById('analyzeBtn').disabled = false;
     document.getElementById('loadingDiv').classList.remove('show');
@@ -879,7 +920,9 @@ function esc(s) { return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
 function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  const duration = msg.length > 20 ? 4200 : 2500;
+  clearTimeout(t._hideTimer);
+  t._hideTimer = setTimeout(() => t.classList.remove('show'), duration);
 }
 function emptyState(icon, title, sub) {
   return `<div class="empty"><div class="eicon">${icon}</div><h3>${title}</h3><p>${sub}</p></div>`;
