@@ -5,25 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>한공부 · 韓語學習</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1B4F9C">
+<meta name="theme-color" content="#C8401F">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="한공부">
 <link rel="apple-touch-icon" href="/korean-study/icon-192.svg">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
 
 :root {
-  --bg: #EEF4FC;
+  --bg: #F5F4F0;
   --surface: #FFFFFF;
-  --border: #C6DAF2;
-  --text: #0C2340;
-  --text2: #24446B;
-  --muted: #7591B3;
-  --accent: #1B4F9C;
-  --accent-soft: #E1EBFA;
-  --blue: #1471C4;
-  --blue-soft: #E1EFFC;
+  --border: #E2DED7;
+  --text: #1A1916;
+  --text2: #5A5750;
+  --muted: #9A9790;
+  --accent: #C8401F;
+  --accent-soft: #FAF0EC;
+  --blue: #2D5FA0;
+  --blue-soft: #EAF0FA;
   --green: #1E6E4A;
   --green-soft: #E6F2EC;
   --red-soft: #FFF0EE;
@@ -54,20 +54,20 @@ header {
   top: 0;
   z-index: 100;
 }
-.logo-kr { font-family: 'Noto Sans KR'; font-size: 25px; font-weight: 800; color: white; }
-.logo-zh { font-size: 16px; color: rgba(255,255,255,0.75); margin-left: 8px; }
+.logo-kr { font-family: 'Noto Sans KR'; font-size: 22px; font-weight: 700; color: white; }
+.logo-zh { font-size: 13px; color: rgba(255,255,255,0.75); margin-left: 8px; }
 .header-right { display: flex; gap: 10px; align-items: center; }
 .hdr-btn {
   background: rgba(255,255,255,0.2);
   border: none; border-radius: 20px;
-  color: white; font-size: 17px; font-weight: 700;
+  color: white; font-size: 14px; font-weight: 500;
   padding: 6px 14px; cursor: pointer; font-family: inherit;
 }
 .stat-badge {
   background: rgba(255,255,255,0.25);
   border-radius: 12px;
   padding: 4px 10px;
-  font-size: 16px; color: white; font-weight: 800;
+  font-size: 13px; color: white; font-weight: 600;
 }
 
 /* ── BOTTOM NAV ── */
@@ -90,8 +90,8 @@ header {
   padding: 8px 4px;
 }
 .nav-item.active { color: var(--accent); }
-.nav-icon { font-size: 28px; line-height: 1; }
-.nav-label { font-size: 14px; font-weight: 800; }
+.nav-icon { font-size: 24px; line-height: 1; }
+.nav-label { font-size: 11px; font-weight: 600; }
 
 /* ── MAIN ── */
 main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
@@ -102,7 +102,7 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 
 /* ── PAGE TITLE ── */
 .page-title {
-  font-size: 16px; font-weight: 800;
+  font-size: 13px; font-weight: 700;
   color: var(--muted); text-transform: uppercase;
   letter-spacing: 1px; margin-bottom: 18px;
 }
@@ -116,27 +116,27 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
   text-align: center;
   margin-bottom: 14px;
 }
-.upload-box .icon { font-size: 57px; margin-bottom: 10px; }
-.upload-box h2 { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
-.upload-box p { color: var(--text2); font-size: 20px; line-height: 1.6; }
+.upload-box .icon { font-size: 52px; margin-bottom: 10px; }
+.upload-box h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.upload-box p { color: var(--text2); font-size: 16px; line-height: 1.6; }
 
 .btn-row { display: flex; gap: 12px; margin-bottom: 14px; }
 .btn-primary {
   flex: 1; padding: 16px; border: none; border-radius: var(--r);
   background: var(--accent); color: white;
-  font-size: 22px; font-weight: 800; cursor: pointer; font-family: inherit;
+  font-size: 18px; font-weight: 700; cursor: pointer; font-family: inherit;
   display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 .btn-secondary {
   flex: 1; padding: 16px; border: 1px solid var(--border); border-radius: var(--r);
   background: var(--surface); color: var(--text);
-  font-size: 22px; font-weight: 800; cursor: pointer; font-family: inherit;
+  font-size: 18px; font-weight: 700; cursor: pointer; font-family: inherit;
   display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 .btn-green {
   width: 100%; padding: 16px; border: none; border-radius: var(--r);
   background: var(--green); color: white;
-  font-size: 22px; font-weight: 800; cursor: pointer; font-family: inherit;
+  font-size: 18px; font-weight: 700; cursor: pointer; font-family: inherit;
   margin-top: 14px;
 }
 
@@ -148,7 +148,7 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 .analyze-btn {
   width: 100%; padding: 18px; border: none; border-radius: var(--r);
   background: var(--accent); color: white;
-  font-size: 24px; font-weight: 800; cursor: pointer; font-family: inherit;
+  font-size: 20px; font-weight: 700; cursor: pointer; font-family: inherit;
 }
 .analyze-btn:disabled { opacity: 0.5; }
 
@@ -162,7 +162,7 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
   margin: 0 auto 14px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-.loading p { font-size: 21px; color: var(--text2); }
+.loading p { font-size: 17px; color: var(--text2); }
 
 /* result */
 .result-box { display: none; }
@@ -174,7 +174,7 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 .result-card-header {
   padding: 14px 18px; background: var(--bg);
   border-bottom: 1px solid var(--border);
-  font-size: 19px; font-weight: 800; color: var(--text2);
+  font-size: 15px; font-weight: 700; color: var(--text2);
 }
 .result-card-body { padding: 14px 18px; }
 
@@ -184,23 +184,22 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
   padding: 12px 0; border-bottom: 1px solid var(--border);
 }
 .vrow:last-child { border-bottom: none; }
-.vrow-kr { font-family: 'Noto Sans KR'; font-size: 25px; font-weight: 800; min-width: 90px; }
-.vrow-rom { font-size: 17px; color: var(--muted); min-width: 80px; }
-.vrow-zh { font-size: 21px; flex: 1; }
-.vrow-en { font-size: 16px; color: var(--muted); font-style: italic; margin-top: 2px; }
-.tts-btn { background: none; border: none; font-size: 25px; cursor: pointer; padding: 4px; }
+.vrow-kr { font-family: 'Noto Sans KR'; font-size: 22px; font-weight: 700; min-width: 90px; }
+.vrow-rom { font-size: 14px; color: var(--muted); min-width: 80px; }
+.vrow-zh { font-size: 17px; flex: 1; }
+.tts-btn { background: none; border: none; font-size: 22px; cursor: pointer; padding: 4px; }
 
 /* ── CARDS ── */
 .filter-row { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
 .filter-chip {
   padding: 8px 16px; border-radius: 20px;
   border: 1px solid var(--border); background: var(--surface);
-  font-size: 19px; cursor: pointer; font-family: inherit; color: var(--text2);
-  font-weight: 700;
+  font-size: 15px; cursor: pointer; font-family: inherit; color: var(--text2);
+  font-weight: 500;
 }
 .filter-chip.active { background: var(--accent); border-color: var(--accent); color: white; }
 
-.card-counter { text-align: center; font-size: 20px; color: var(--muted); margin-bottom: 12px; }
+.card-counter { text-align: center; font-size: 16px; color: var(--muted); margin-bottom: 12px; }
 
 .card-scene {
   width: 100%; height: 260px;
@@ -223,18 +222,17 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
   padding: 28px; text-align: center; gap: 12px;
 }
 .card-face.back { transform: rotateY(180deg); background: var(--accent-soft); }
-.card-label { font-size: 16px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-.card-kr { font-family: 'Noto Sans KR'; font-size: 57px; font-weight: 800; line-height: 1.1; }
-.card-rom { font-size: 22px; color: var(--text2); }
-.card-zh { font-size: 35px; font-weight: 800; color: var(--accent); }
-.card-en { font-size: 19px; color: var(--text2); font-style: italic; }
-.card-tap { font-size: 19px; color: var(--muted); }
+.card-label { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.card-kr { font-family: 'Noto Sans KR'; font-size: 52px; font-weight: 700; line-height: 1.1; }
+.card-rom { font-size: 18px; color: var(--text2); }
+.card-zh { font-size: 32px; font-weight: 700; color: var(--accent); }
+.card-tap { font-size: 15px; color: var(--muted); }
 
 .card-btns { display: flex; gap: 12px; }
 .card-btn {
   flex: 1; padding: 16px 8px; border-radius: var(--r);
   border: 1.5px solid var(--border); background: var(--surface);
-  font-size: 20px; font-weight: 800; cursor: pointer; font-family: inherit;
+  font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit;
 }
 .card-btn.again { border-color: var(--accent); color: var(--accent); }
 .card-btn.speak { border-color: var(--blue); color: var(--blue); }
@@ -247,25 +245,24 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
   margin-bottom: 16px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
-.fill-q { font-size: 24px; line-height: 2; margin-bottom: 12px; }
+.fill-q { font-size: 20px; line-height: 2; margin-bottom: 12px; }
 .fill-input {
   display: inline-block; min-width: 90px;
   border: none; border-bottom: 3px solid var(--accent);
-  font-size: 25px; font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 800; color: var(--accent); background: transparent;
+  font-size: 22px; font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700; color: var(--accent); background: transparent;
   outline: none; text-align: center; padding: 2px 6px;
   vertical-align: middle;
 }
 .fill-input.correct { border-color: var(--green); color: var(--green); }
 .fill-input.wrong { border-color: #C62828; color: #C62828; }
-.fill-hint { font-size: 20px; color: var(--muted); margin-bottom: 4px; }
-.fill-hint-en { font-size: 16px; color: var(--muted); font-style: italic; margin-bottom: 12px; }
-.fill-reveal { font-size: 20px; color: var(--text2); display: none; margin-bottom: 10px; }
+.fill-hint { font-size: 16px; color: var(--muted); margin-bottom: 12px; }
+.fill-reveal { font-size: 16px; color: var(--text2); display: none; margin-bottom: 10px; }
 .fill-reveal.show { display: block; }
 .confirm-btn {
   padding: 12px 28px; background: var(--accent); color: white;
-  border: none; border-radius: var(--rs); font-size: 21px;
-  font-weight: 800; cursor: pointer; font-family: inherit;
+  border: none; border-radius: var(--rs); font-size: 17px;
+  font-weight: 700; cursor: pointer; font-family: inherit;
 }
 
 /* ── PRON ── */
@@ -274,15 +271,14 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
   border: 1px solid var(--border); padding: 20px;
   margin-bottom: 12px; display: flex; align-items: center; gap: 16px;
 }
-.pron-kr { font-family: 'Noto Sans KR'; font-size: 37px; font-weight: 800; min-width: 110px; }
+.pron-kr { font-family: 'Noto Sans KR'; font-size: 34px; font-weight: 700; min-width: 110px; }
 .pron-info { flex: 1; }
-.pron-rom { font-size: 19px; color: var(--muted); }
-.pron-zh { font-size: 24px; font-weight: 700; }
-.pron-en { font-size: 17px; color: var(--muted); font-style: italic; margin-top: 2px; }
+.pron-rom { font-size: 15px; color: var(--muted); }
+.pron-zh { font-size: 20px; font-weight: 500; }
 .pron-play {
   width: 52px; height: 52px; border-radius: 50%;
   background: var(--blue); color: white; border: none;
-  font-size: 25px; cursor: pointer;
+  font-size: 22px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
@@ -298,25 +294,24 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
   display: flex; align-items: center; cursor: pointer; gap: 12px;
 }
 .grammar-hdr-text { flex: 1; }
-.grammar-name { font-size: 23px; font-weight: 800; }
-.grammar-kr-form { font-family: 'Noto Sans KR'; font-size: 25px; color: var(--blue); margin-top: 2px; }
+.grammar-name { font-size: 19px; font-weight: 700; }
+.grammar-kr-form { font-family: 'Noto Sans KR'; font-size: 22px; color: var(--blue); margin-top: 2px; }
 .grammar-body { padding: 18px 20px; display: none; }
 .grammar-body.open { display: block; }
 .grammar-pattern {
   font-family: 'Noto Sans KR'; background: var(--bg);
   padding: 12px 16px; border-radius: var(--rs);
-  font-size: 22px; color: var(--blue); font-weight: 800; margin-bottom: 14px;
+  font-size: 18px; color: var(--blue); font-weight: 600; margin-bottom: 14px;
 }
 .grammar-ex { list-style: none; }
 .grammar-ex li { padding: 10px 0; border-bottom: 1px solid var(--border); }
 .grammar-ex li:last-child { border-bottom: none; }
-.grammar-ex-kr { font-family: 'Noto Sans KR'; font-size: 24px; margin-bottom: 4px; }
-.grammar-ex-zh { font-size: 20px; color: var(--text2); }
-.grammar-ex-en { font-size: 16px; color: var(--muted); font-style: italic; margin-top: 2px; }
+.grammar-ex-kr { font-family: 'Noto Sans KR'; font-size: 20px; margin-bottom: 4px; }
+.grammar-ex-zh { font-size: 16px; color: var(--text2); }
 
 /* ── QUIZ ── */
 .quiz-meta { display: flex; justify-content: space-between; margin-bottom: 12px; }
-.quiz-meta span { font-size: 21px; color: var(--text2); font-weight: 800; }
+.quiz-meta span { font-size: 17px; color: var(--text2); font-weight: 600; }
 .progress-bar { height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 22px; }
 .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.3s; }
 .quiz-word-card {
@@ -324,30 +319,30 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
   border: 1px solid var(--border); padding: 36px 24px;
   text-align: center; margin-bottom: 18px;
 }
-.quiz-prompt { font-size: 21px; color: var(--text2); margin-bottom: 14px; }
-.quiz-word { font-family: 'Noto Sans KR'; font-size: 62px; font-weight: 800; }
-.quiz-rom { font-size: 21px; color: var(--muted); margin-top: 8px; }
+.quiz-prompt { font-size: 17px; color: var(--text2); margin-bottom: 14px; }
+.quiz-word { font-family: 'Noto Sans KR'; font-size: 56px; font-weight: 700; }
+.quiz-rom { font-size: 17px; color: var(--muted); margin-top: 8px; }
 .quiz-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .quiz-opt {
   padding: 18px 12px; background: var(--surface);
   border: 1.5px solid var(--border); border-radius: var(--r);
-  font-size: 22px; cursor: pointer; font-family: inherit;
-  text-align: center; line-height: 1.4; font-weight: 700;
+  font-size: 18px; cursor: pointer; font-family: inherit;
+  text-align: center; line-height: 1.4; font-weight: 500;
 }
 .quiz-opt:disabled { cursor: default; }
-.quiz-opt.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 800; }
+.quiz-opt.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 700; }
 .quiz-opt.wrong { background: var(--red-soft); border-color: #C62828; color: #C62828; }
 
 .score-card {
   background: var(--surface); border-radius: var(--r);
   border: 1px solid var(--border); padding: 48px 24px; text-align: center;
 }
-.score-num { font-size: 88px; font-weight: 800; color: var(--accent); }
-.score-label { font-size: 24px; color: var(--text2); margin-top: 8px; }
+.score-num { font-size: 80px; font-weight: 700; color: var(--accent); }
+.score-label { font-size: 20px; color: var(--text2); margin-top: 8px; }
 .retry-btn {
   margin-top: 24px; padding: 16px 40px;
   background: var(--accent); color: white; border: none;
-  border-radius: var(--r); font-size: 22px; font-weight: 800;
+  border-radius: var(--r); font-size: 18px; font-weight: 700;
   cursor: pointer; font-family: inherit;
 }
 
@@ -355,19 +350,18 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 .empty {
   text-align: center; padding: 60px 24px;
 }
-.empty .eicon { font-size: 62px; margin-bottom: 14px; }
-.empty h3 { font-size: 24px; font-weight: 800; color: var(--text2); margin-bottom: 8px; }
-.empty p { font-size: 21px; color: var(--muted); }
+.empty .eicon { font-size: 56px; margin-bottom: 14px; }
+.empty h3 { font-size: 20px; font-weight: 700; color: var(--text2); margin-bottom: 8px; }
+.empty p { font-size: 17px; color: var(--muted); }
 
 /* ── TOAST ── */
 .toast {
   position: fixed; bottom: calc(var(--nav-h) + 16px); left: 50%;
   transform: translateX(-50%) translateY(60px);
-  background: #0C2340; color: white;
+  background: #1A1916; color: white;
   padding: 12px 24px; border-radius: 24px;
-  font-size: 18px; z-index: 999; transition: transform 0.25s;
-  white-space: normal; font-weight: 700; text-align: center;
-  max-width: 88vw; box-sizing: border-box;
+  font-size: 16px; z-index: 999; transition: transform 0.25s;
+  white-space: nowrap; font-weight: 500;
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
@@ -376,11 +370,62 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 18px;
 }
-.lib-count { font-size: 20px; color: var(--text2); font-weight: 800; }
+.lib-count { font-size: 16px; color: var(--text2); font-weight: 600; }
 .lib-clear {
   padding: 6px 14px; border: 1px solid #C62828; border-radius: 20px;
-  background: none; color: #C62828; font-size: 17px; cursor: pointer; font-family: inherit;
+  background: none; color: #C62828; font-size: 14px; cursor: pointer; font-family: inherit;
 }
+
+/* ── TABS ── */
+.tab-row {
+  display: flex; gap: 8px; margin-bottom: 18px;
+}
+.tab-btn {
+  flex: 1; padding: 12px 8px; border-radius: var(--rs);
+  border: 1.5px solid var(--border); background: var(--surface);
+  font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit;
+  color: var(--text2); transition: all 0.15s;
+}
+.tab-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── SENT CARD ── */
+.sent-scene {
+  width: 100%; min-height: 220px;
+  perspective: 1000px; cursor: pointer; margin-bottom: 18px;
+}
+.sent-inner {
+  width: 100%; min-height: 220px;
+  position: relative; transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+.sent-inner.flipped { transform: rotateY(180deg); }
+.sent-face {
+  position: absolute; inset: 0;
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  backface-visibility: hidden;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 28px 24px; text-align: center; gap: 14px;
+  min-height: 220px;
+}
+.sent-face.back { transform: rotateY(180deg); background: var(--blue-soft); }
+.sent-label { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.sent-zh { font-size: 22px; font-weight: 600; line-height: 1.5; color: var(--text); }
+.sent-kr { font-family: "Noto Sans KR"; font-size: 22px; font-weight: 700; line-height: 1.6; color: var(--blue); }
+.sent-tap { font-size: 15px; color: var(--muted); }
+.sent-counter { text-align: center; font-size: 16px; color: var(--muted); margin-bottom: 12px; }
+.sent-btns { display: flex; gap: 12px; }
+.sent-btn {
+  flex: 1; padding: 16px 8px; border-radius: var(--r);
+  border: 1.5px solid var(--border); background: var(--surface);
+  font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit;
+}
+.sent-btn.play { border-color: var(--blue); color: var(--blue); }
+.sent-btn.next { border-color: var(--green); color: var(--green); }
 </style>
 </head>
 <body>
@@ -399,7 +444,14 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 <main>
   <!-- ── 掃描 ── -->
   <div class="section active" id="sec-scan">
-    <div class="page-title">📸 掃描書頁</div>
+    <div class="page-title">➕ 加入內容</div>
+    <div class="tab-row" style="margin-bottom:16px">
+      <button class="tab-btn active" id="scanTabPhoto" onclick="switchScanTab('photo',this)">📷 拍照/圖片</button>
+      <button class="tab-btn" id="scanTabText" onclick="switchScanTab('text',this)">📝 貼上文字</button>
+    </div>
+
+    <!-- 圖片模式 -->
+    <div id="scanPhoto">
     <div class="upload-box" id="uploadBox">
       <div class="icon">📖</div>
       <h2>上傳書頁照片</h2>
@@ -415,6 +467,13 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
     <div id="previewArea" style="display:none">
       <img id="previewImg" class="preview-img">
       <button class="analyze-btn" id="analyzeBtn" onclick="analyze()">🤖 分析書頁內容</button>
+    </div>
+    </div><!-- end scanPhoto -->
+
+    <!-- 文字模式 -->
+    <div id="scanText" style="display:none">
+      <textarea id="textInput" placeholder="貼上韓文文章、課文或對話⋯&#10;&#10;AI 會自動分析生字和可練習的例句" style="width:100%;min-height:200px;padding:16px;font-size:17px;font-family:inherit;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);resize:vertical;outline:none;line-height:1.8;color:var(--text)"></textarea>
+      <button class="analyze-btn" style="margin-top:12px" onclick="analyzeText()">🤖 分析文字內容</button>
     </div>
 
     <div class="loading" id="loadingDiv">
@@ -454,10 +513,15 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
     <div id="cardArea"></div>
   </div>
 
-  <!-- ── 填空 ── -->
+  <!-- ── 例句 ── -->
   <div class="section" id="sec-fill">
-    <div class="page-title">✏️ 填空練習</div>
-    <div id="fillArea"></div>
+    <div class="page-title">💬 例句</div>
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="switchTab('sent-list',this)">例句列表</button>
+      <button class="tab-btn" onclick="switchTab('sent-card',this)">例句卡</button>
+    </div>
+    <div id="sent-list" class="tab-panel active"><div id="sentListArea"></div></div>
+    <div id="sent-card" class="tab-panel"><div id="sentCardArea"></div></div>
   </div>
 
   <!-- ── 發音 ── -->
@@ -487,7 +551,7 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
     <span class="nav-icon">🃏</span><span class="nav-label">單字卡</span>
   </button>
   <button class="nav-item" onclick="nav('fill',this)">
-    <span class="nav-icon">✏️</span><span class="nav-label">填空</span>
+    <span class="nav-icon">💬</span><span class="nav-label">例句</span>
   </button>
   <button class="nav-item" onclick="nav('pron',this)">
     <span class="nav-icon">🔊</span><span class="nav-label">發音</span>
@@ -523,7 +587,7 @@ function nav(name, btn) {
   document.getElementById('sec-' + name).classList.add('active');
   btn.classList.add('active');
   if (name === 'cards') { filteredVocab = [...vocab]; cardIdx = 0; renderCard(); }
-  if (name === 'fill') renderFill();
+  if (name === 'fill') { renderSentList(); }
   if (name === 'pron') renderPron();
   if (name === 'grammar') renderGrammar();
   if (name === 'quiz') startQuiz();
@@ -561,59 +625,6 @@ function showApiSettings() {
 }
 
 // ── ANALYZE ──
-async function callGeminiWithRetry(key, imgBase64, prompt) {
-  const maxRetries = 2; // only retries 503 (server temporarily busy)
-  let lastErr;
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    if (attempt > 0) {
-      const loadP = document.querySelector('#loadingDiv p');
-      if (loadP) loadP.textContent = `伺服器忙碌中，重試第 ${attempt} 次……`;
-      await new Promise(r => setTimeout(r, 1500 * attempt));
-    }
-    let res;
-    try {
-      res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [
-              { inline_data: { mime_type: 'image/jpeg', data: imgBase64 } },
-              { text: prompt }
-            ]}],
-            generationConfig: { temperature: 0.1 }
-          })
-        }
-      );
-    } catch (networkErr) {
-      lastErr = new Error(networkErr.message);
-      lastErr.friendlyMessage = '⚠️ 網路連線失敗，請檢查網路後再試';
-      continue; // network hiccup, worth retrying
-    }
-
-    if (res.status === 429) {
-      const e = new Error('quota exceeded');
-      e.friendlyMessage = '⏳ 今日 AI 額度已用完，請稍後再試（免費額度通常隔天重置）';
-      throw e; // no point retrying, quota won't come back within seconds
-    }
-    if (res.status === 503) {
-      lastErr = new Error('service unavailable');
-      lastErr.friendlyMessage = '⚠️ Google 伺服器暫時忙碌，請稍後再試';
-      continue; // retry
-    }
-
-    const data = await res.json();
-    if (data.error) {
-      const e = new Error(data.error.message);
-      e.friendlyMessage = '⚠️ ' + data.error.message;
-      throw e;
-    }
-    return data; // success
-  }
-  throw lastErr;
-}
-
 async function analyze() {
   const key = getKey();
   if (!key) {
@@ -623,21 +634,34 @@ async function analyze() {
   if (!imageBase64) return;
   document.getElementById('analyzeBtn').disabled = true;
   document.getElementById('loadingDiv').classList.add('show');
-  const loadP0 = document.querySelector('#loadingDiv p');
-  if (loadP0) loadP0.textContent = 'AI 正在識別書頁內容……';
   document.getElementById('resultBox').classList.remove('show');
 
-  const prompt = `你是韓語教學助手。分析這張韓語書頁圖片，提取所有學習內容。每個翻譯都同時提供繁體中文(zh)與英文(en)。
+  const prompt = `你是韓語教學助手。分析這張韓語書頁圖片，提取所有學習內容。
 嚴格以JSON回應，不要markdown：
-{"vocab":[{"kr":"韓文","reading":"羅馬拼音","zh":"中文翻譯","en":"English translation"}],"grammar":[{"title":"文法名稱","kr":"韓文形式","pattern":"說明","examples":[{"kr":"例句","zh":"中文翻譯","en":"English translation"}]}],"sentences":[{"kr":"句子","zh":"中文翻譯","en":"English translation"}],"notes":"文法備注"}`;
+{"vocab":[{"kr":"韓文","reading":"羅馬拼音","zh":"中文"}],"grammar":[{"title":"文法名稱","kr":"韓文形式","pattern":"說明","examples":[{"kr":"例句","zh":"翻譯"}]}],"sentences":[{"kr":"句子","zh":"翻譯"}],"notes":"文法備注"}`;
 
   try {
-    const data = await callGeminiWithRetry(key, imageBase64, prompt);
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [
+            { inline_data: { mime_type: 'image/jpeg', data: imageBase64 } },
+            { text: prompt }
+          ]}],
+          generationConfig: { temperature: 0.1 }
+        })
+      }
+    );
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
     const text = data.candidates[0].content.parts[0].text;
     const clean = text.replace(/```json|```/g,'').trim();
     renderResult(JSON.parse(clean));
   } catch(err) {
-    toast(err.friendlyMessage || ('⚠️ ' + err.message));
+    toast('⚠️ ' + err.message);
   } finally {
     document.getElementById('analyzeBtn').disabled = false;
     document.getElementById('loadingDiv').classList.remove('show');
@@ -660,10 +684,7 @@ function renderResult(d) {
       <div class="vrow">
         <div class="vrow-kr">${v.kr}</div>
         <div class="vrow-rom">${v.reading||''}</div>
-        <div style="flex:1">
-          <div class="vrow-zh">${v.zh}</div>
-          ${v.en?`<div class="vrow-en">${v.en}</div>`:''}
-        </div>
+        <div class="vrow-zh">${v.zh}</div>
         <button class="tts-btn" onclick="speak('${esc(v.kr)}')">🔊</button>
       </div>`).join('');
     rv.style.display = 'block';
@@ -685,7 +706,6 @@ function renderResult(d) {
         <div style="flex:1">
           <div style="font-family:'Noto Sans KR';font-size:20px;font-weight:600;margin-bottom:4px">${s.kr}</div>
           <div style="font-size:16px;color:var(--text2)">${s.zh}</div>
-          ${s.en?`<div class="vrow-en">${s.en}</div>`:''}
         </div>
         <button class="tts-btn" onclick="speak('${esc(s.kr)}')">🔊</button>
       </div>`).join('');
@@ -751,9 +771,8 @@ function renderCard() {
           <div class="card-tap">點擊翻面</div>
         </div>
         <div class="card-face back">
-          <div class="card-label">中文 / English</div>
+          <div class="card-label">中文</div>
           <div class="card-zh">${v.zh}</div>
-          ${v.en?`<div class="card-en">${v.en}</div>`:''}
           <div class="card-kr" style="font-size:36px">${v.kr}</div>
           <div class="card-rom">${v.reading||''}</div>
         </div>
@@ -778,39 +797,147 @@ function markCard(status) {
 }
 
 // ── FILL ──
-function renderFill() {
-  const area = document.getElementById('fillArea');
-  const items = [...sentences];
-  vocab.forEach(v => items.push({
-    kr: `${v.kr}의 뜻은 "${v.zh}"입니다`,
-    zh: `「${v.kr}」的意思是「${v.zh}」`,
-    en: v.en ? `"${v.kr}" means "${v.en}"` : ''
-  }));
-  if (!items.length) { area.innerHTML = emptyState('✏️','還沒有練習題','先用掃描功能上傳書頁'); return; }
-  const picked = items.sort(()=>Math.random()-0.5).slice(0, Math.min(15, items.length));
-  area.innerHTML = picked.map((s,i) => {
-    const words = s.kr.split(/\s+/);
-    const bi = Math.floor(Math.random() * words.length);
-    const ans = words[bi];
-    const display = words.map((w,wi) => wi===bi
-      ? `<input class="fill-input" id="fi${i}" data-ans="${esc(ans)}" placeholder="？">`
-      : w).join(' ');
-    return `<div class="fill-card">
-      <div class="fill-q">${display}</div>
-      <div class="fill-hint">${s.zh}</div>
-      ${s.en?`<div class="fill-hint-en">${s.en}</div>`:''}
-      <div class="fill-reveal" id="fr${i}">✅ 正確答案：<strong>${ans}</strong></div>
-      <button class="confirm-btn" onclick="checkFill(${i})">確認</button>
-    </div>`;
-  }).join('');
+// ── TAB SWITCH ──
+// ── SCAN TAB SWITCH ──
+function switchScanTab(mode, btn) {
+  document.querySelectorAll('#scanTabPhoto, #scanTabText').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('scanPhoto').style.display = mode === 'photo' ? 'block' : 'none';
+  document.getElementById('scanText').style.display = mode === 'text' ? 'block' : 'none';
+  // 清除結果
+  document.getElementById('resultBox').classList.remove('show');
+  document.getElementById('loadingDiv').classList.remove('show');
 }
 
-function checkFill(i) {
-  const inp = document.getElementById('fi'+i);
-  const ans = inp.dataset.ans;
-  inp.classList.remove('correct','wrong');
-  if (inp.value.trim() === ans) { inp.classList.add('correct'); toast('🎉 正確！'); }
-  else { inp.classList.add('wrong'); document.getElementById('fr'+i).classList.add('show'); toast('❌ 再試試看'); }
+// ── ANALYZE TEXT ──
+async function analyzeText() {
+  const text = document.getElementById('textInput').value.trim();
+  if (!text) { toast('請先貼上文字'); return; }
+  const key = getKey();
+  if (!key) { if (confirm('需要設定 Gemini API Key。
+前往設定？')) showApiSettings(); return; }
+
+  document.getElementById('loadingDiv').classList.add('show');
+  document.getElementById('resultBox').classList.remove('show');
+
+  const prompt = `你是韓語教學助手。請分析以下韓文文章，提取學習內容。
+嚴格以JSON回應，不要markdown：
+{"vocab":[{"kr":"生字韓文","reading":"羅馬拼音","zh":"中文意思"}],"grammar":[{"title":"文法名稱","kr":"韓文形式","pattern":"說明","examples":[{"kr":"例句","zh":"翻譯"}]}],"sentences":[{"kr":"可練習的完整句子","zh":"中文翻譯"}],"notes":"文法備注"}
+
+請盡量提取所有生字，以及3-8個適合練習的例句。
+
+文章內容：
+${text}`;
+
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.1 }
+        })
+      }
+    );
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    const raw = data.candidates[0].content.parts[0].text;
+    const clean = raw.replace(/```json|```/g,'').trim();
+    renderResult(JSON.parse(clean));
+  } catch(err) {
+    toast('⚠️ ' + err.message);
+  } finally {
+    document.getElementById('loadingDiv').classList.remove('show');
+  }
+}
+
+// ── TAB SWITCH (例句頁) ──
+function switchTab(id, btn) {
+  const panel = btn.closest('.section');
+  panel.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  panel.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+  if (id === 'sent-list') renderSentList();
+  if (id === 'sent-card') renderSentCard();
+}
+
+function renderFill() { renderSentList(); }
+
+// ── 例句列表 ──
+function renderSentList() {
+  const area = document.getElementById('sentListArea');
+  const all = getAllSentences();
+  if (!all.length) { area.innerHTML = emptyState('💬','還沒有例句','先掃描書頁或貼上文字'); return; }
+  area.innerHTML = `
+    <div style="font-size:15px;color:var(--muted);margin-bottom:14px">共 ${all.length} 個例句</div>
+    ${all.map((s,i) => `
+      <div class="pron-card" style="flex-direction:column;align-items:flex-start;gap:10px">
+        <div style="display:flex;align-items:flex-start;gap:10px;width:100%">
+          <div style="flex:1">
+            <div style="font-family:'Noto Sans KR';font-size:20px;font-weight:700;line-height:1.6;margin-bottom:6px">${s.kr}</div>
+            <div style="font-size:17px;color:var(--text2);line-height:1.5">${s.zh}</div>
+          </div>
+          <button class="pron-play" onclick="speak('${esc(s.kr)}')" style="flex-shrink:0;margin-top:4px">▶</button>
+        </div>
+      </div>`).join('')}`;
+}
+
+function getAllSentences() {
+  const all = [...sentences];
+  grammar.forEach(g => g.examples?.forEach(ex => {
+    if (!all.find(x => x.kr === ex.kr)) all.push(ex);
+  }));
+  return all;
+}
+
+// ── 例句卡 ──
+let sentIdx = 0;
+let sentList = [];
+
+function renderSentCard() {
+  const area = document.getElementById('sentCardArea');
+  sentList = getAllSentences();
+  if (!sentList.length) {
+    area.innerHTML = emptyState('💬','還沒有例句','先掃描書頁或貼上文字');
+    return;
+  }
+  sentIdx = 0;
+  renderOneSentCard();
+}
+
+function renderOneSentCard() {
+  const area = document.getElementById('sentCardArea');
+  if (!sentList.length) return;
+  const s = sentList[sentIdx];
+  area.innerHTML = `
+    <div class="sent-counter">${sentIdx+1} / ${sentList.length}</div>
+    <div class="sent-scene" onclick="flipSent(this)">
+      <div class="sent-inner">
+        <div class="sent-face front">
+          <div class="sent-label">中文</div>
+          <div class="sent-zh">${s.zh}</div>
+          <div class="sent-tap">點擊看韓文</div>
+        </div>
+        <div class="sent-face back">
+          <div class="sent-label">韓文</div>
+          <div class="sent-kr">${s.kr}</div>
+        </div>
+      </div>
+    </div>
+    <div class="sent-btns">
+      <button class="sent-btn play" onclick="speak('${esc(s.kr)}')">🔊 朗讀</button>
+      <button class="sent-btn next" onclick="nextSent()">下一句 →</button>
+    </div>`;
+}
+
+function flipSent(el) { el.querySelector('.sent-inner').classList.toggle('flipped'); }
+
+function nextSent() {
+  sentIdx = (sentIdx + 1) % sentList.length;
+  renderOneSentCard();
 }
 
 // ── PRON ──
@@ -823,7 +950,6 @@ function renderPron() {
       <div class="pron-info">
         <div class="pron-rom">${v.reading||''}</div>
         <div class="pron-zh">${v.zh}</div>
-        ${v.en?`<div class="pron-en">${v.en}</div>`:''}
       </div>
       <button class="pron-play" onclick="speak('${esc(v.kr)}')">▶</button>
     </div>`).join('');
@@ -848,7 +974,6 @@ function renderGrammar() {
           <li>
             <div class="grammar-ex-kr">${ex.kr} <button class="tts-btn" onclick="speak('${esc(ex.kr)}')">🔊</button></div>
             <div class="grammar-ex-zh">${ex.zh}</div>
-            ${ex.en?`<div class="grammar-ex-en">${ex.en}</div>`:''}
           </li>`).join('')}</ul>`:''}
       </div>
     </div>`).join('');
@@ -920,9 +1045,7 @@ function esc(s) { return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
 function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
-  const duration = msg.length > 20 ? 4200 : 2500;
-  clearTimeout(t._hideTimer);
-  t._hideTimer = setTimeout(() => t.classList.remove('show'), duration);
+  setTimeout(() => t.classList.remove('show'), 2500);
 }
 function emptyState(icon, title, sub) {
   return `<div class="empty"><div class="eicon">${icon}</div><h3>${title}</h3><p>${sub}</p></div>`;
