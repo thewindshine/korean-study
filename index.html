@@ -822,8 +822,7 @@ async function analyzeText() {
   const text = document.getElementById('textInput').value.trim();
   if (!text) { toast('請先貼上文字'); return; }
   const key = getKey();
-  if (!key) { if (confirm('需要設定 Gemini API Key。
-前往設定？')) showApiSettings(); return; }
+  if (!key) { if (confirm('需要設定 Gemini API Key。\n前往設定？')) showApiSettings(); return; }
 
   document.getElementById('loadingDiv').classList.add('show');
   document.getElementById('resultBox').classList.remove('show');
