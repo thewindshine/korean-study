@@ -269,6 +269,20 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 .practice-kr { font-family: 'Noto Sans KR'; font-size: 18px; margin-bottom: 4px; }
 .practice-zh { font-size: 14px; color: var(--text2); }
 
+/* ── Quiz 錯題複習 ── */
+.quiz-review-hdr {
+  font-size: 16px; font-weight: 700; color: var(--text);
+  margin: 24px 0 12px;
+}
+.quiz-review-item {
+  border: 1.5px solid var(--red-soft, #FCE4E4); border-radius: var(--rl);
+  padding: 14px 16px; margin-bottom: 14px; background: #fff;
+}
+.quiz-review-word { font-family: 'Noto Sans KR'; font-size: 22px; font-weight: 700; }
+.quiz-review-rom { font-family: inherit; font-size: 14px; color: var(--muted); font-weight: 400; }
+.quiz-review-ans { font-size: 15px; color: var(--green); font-weight: 600; margin: 6px 0 10px; }
+.quiz-review-refresh { display: block; margin-top: 8px; }
+
 /* ── FILL ── */
 .fill-card {
   background: var(--surface); border-radius: var(--r);
@@ -622,7 +636,7 @@ let sentences = load('sentences', []); // {kr, zh}
 let imageBase64 = null;
 let filteredVocab = [...vocab];
 let cardIdx = 0;
-let quizQs = [], quizIdx = 0, quizScore = 0;
+let quizQs = [], quizIdx = 0, quizScore = 0, quizWrong = [];
 
 // ── NAV ──
 function nav(name, btn) {
@@ -840,6 +854,35 @@ function renderCard() {
   if (v.practiceSentences && v.practiceSentences.length) renderVocabPractice(v);
 }
 
+// ── AI 練習句 共用函式 ──
+async function fetchPracticeSentences(prompt) {
+  const key = getKey();
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.5 }
+      })
+    }
+  );
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  const text = data.candidates[0].content.parts[0].text;
+  const clean = text.replace(/```json|```/g,'').trim();
+  const parsed = JSON.parse(clean);
+  return parsed.sentences || [];
+}
+
+function vocabPracticePrompt(v) {
+  return `你是韓語教學助手。請針對韓語單字「${v.kr}」（讀音：${v.reading||'無'}，中文意思：${v.zh}）造5個適合初中級學習者練習的韓文例句。
+例句需自然、實用，長度適中，並盡量涵蓋不同語境或時態。
+嚴格以JSON回應，不要markdown，格式：
+{"sentences":[{"kr":"韓文例句","zh":"中文翻譯"}]}`;
+}
+
 // ── AI 練習句（單字）──
 async function genVocabPractice() {
   const v = filteredVocab[cardIdx];
@@ -847,34 +890,13 @@ async function genVocabPractice() {
   const box = document.getElementById('vocabPracticeBox');
   if (!box) return;
   box.classList.add('show');
-  const key = getKey();
-  if (!key) {
+  if (!getKey()) {
     box.innerHTML = `<div class="practice-loading">⚠️ 尚未設定 API Key <button class="practice-refresh" onclick="showApiSettings()">前往設定</button></div>`;
     return;
   }
   box.innerHTML = `<div class="practice-loading">⏳ 產生練習句中...</div>`;
   try {
-    const prompt = `你是韓語教學助手。請針對韓語單字「${v.kr}」（讀音：${v.reading||'無'}，中文意思：${v.zh}）造5個適合初中級學習者練習的韓文例句。
-例句需自然、實用，長度適中，並盡量涵蓋不同語境或時態。
-嚴格以JSON回應，不要markdown，格式：
-{"sentences":[{"kr":"韓文例句","zh":"中文翻譯"}]}`;
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.5 }
-        })
-      }
-    );
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-    const text = data.candidates[0].content.parts[0].text;
-    const clean = text.replace(/```json|```/g,'').trim();
-    const parsed = JSON.parse(clean);
-    v.practiceSentences = parsed.sentences || [];
+    v.practiceSentences = await fetchPracticeSentences(vocabPracticePrompt(v));
     save('vocab', vocab);
     renderVocabPractice(v);
   } catch(err) {
@@ -1170,8 +1192,7 @@ async function genGrammarPractice(i) {
   const box = document.getElementById('gPracticeBox'+i);
   if (!box) return;
   box.classList.add('show');
-  const key = getKey();
-  if (!key) {
+  if (!getKey()) {
     box.innerHTML = `<div class="practice-loading">⚠️ 尚未設定 API Key <button class="practice-refresh" onclick="showApiSettings()">前往設定</button></div>`;
     return;
   }
@@ -1184,23 +1205,7 @@ async function genGrammarPractice(i) {
 例句需自然、實用，涵蓋不同主詞與情境，並確實符合此文法規則，適合初中級學習者練習。
 嚴格以JSON回應，不要markdown，格式：
 {"sentences":[{"kr":"韓文例句","zh":"中文翻譯"}]}`;
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.5 }
-        })
-      }
-    );
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-    const text = data.candidates[0].content.parts[0].text;
-    const clean = text.replace(/```json|```/g,'').trim();
-    const parsed = JSON.parse(clean);
-    g.practiceExamples = parsed.sentences || [];
+    g.practiceExamples = await fetchPracticeSentences(prompt);
     save('grammar', grammar);
     renderGrammarPractice(i);
   } catch(err) {
@@ -1239,7 +1244,7 @@ function startQuiz() {
     const wrongs = vocab.filter(x=>x.kr!==v.kr).sort(()=>Math.random()-0.5).slice(0,3).map(x=>x.zh);
     return { v, opts: [v.zh,...wrongs].sort(()=>Math.random()-0.5), correct: v.zh };
   });
-  quizIdx = 0; quizScore = 0; renderQuiz();
+  quizIdx = 0; quizScore = 0; quizWrong = []; renderQuiz();
 }
 
 function renderQuiz() {
@@ -1250,7 +1255,10 @@ function renderQuiz() {
       <div class="score-num">${quizScore}/${quizQs.length}</div>
       <div class="score-label">正確率 ${pct}%</div>
       <button class="retry-btn" onclick="startQuiz()">🔄 再測一次</button>
-    </div>`; return;
+    </div>
+    <div id="quizReviewArea"></div>`;
+    renderQuizReview();
+    return;
   }
   const q = quizQs[quizIdx];
   const pct = quizIdx/quizQs.length*100;
@@ -1276,8 +1284,59 @@ function answerQuiz(chosen, correct, btn) {
     if (b.textContent.trim() === correct) b.classList.add('correct');
   });
   if (chosen === correct) { quizScore++; toast('🎉 正確！'); }
-  else { btn.classList.add('wrong'); toast('❌ 答錯了'); }
+  else { btn.classList.add('wrong'); toast('❌ 答錯了'); quizWrong.push(quizQs[quizIdx].v); }
   setTimeout(() => { quizIdx++; renderQuiz(); }, 1200);
+}
+
+// ── 錯題複習 + AI 練習句 ──
+async function renderQuizReview() {
+  const box = document.getElementById('quizReviewArea');
+  if (!box) return;
+  if (!quizWrong.length) { box.innerHTML = ''; return; }
+  box.innerHTML = `<div class="quiz-review-hdr">📋 錯題複習（${quizWrong.length} 題）</div>` +
+    quizWrong.map((v,i) => `
+      <div class="quiz-review-item">
+        <div class="quiz-review-word">${v.kr}${v.reading?` <span class="quiz-review-rom">(${v.reading})</span>`:''}</div>
+        <div class="quiz-review-ans">✅ 正確答案：${v.zh}</div>
+        <div class="practice-box show" id="quizPracticeBox${i}"><div class="practice-loading">⏳ 產生練習句中...</div></div>
+      </div>`).join('');
+  for (let i = 0; i < quizWrong.length; i++) {
+    const v = quizWrong[i];
+    if (v.practiceSentences && v.practiceSentences.length) renderQuizPracticeItem(i, v);
+    else await genQuizPractice(i, v);
+  }
+}
+
+async function genQuizPractice(i, v) {
+  const box = document.getElementById('quizPracticeBox'+i);
+  if (!box) return;
+  if (!getKey()) {
+    box.innerHTML = `<div class="practice-loading">⚠️ 尚未設定 API Key <button class="practice-refresh" onclick="showApiSettings()">前往設定</button></div>`;
+    return;
+  }
+  try {
+    v.practiceSentences = await fetchPracticeSentences(vocabPracticePrompt(v));
+    save('vocab', vocab);
+    renderQuizPracticeItem(i, v);
+  } catch(err) {
+    box.innerHTML = `<div class="practice-loading">⚠️ ${esc(err.message)}</div>`;
+  }
+}
+
+function renderQuizPracticeItem(i, v) {
+  const box = document.getElementById('quizPracticeBox'+i);
+  if (!box) return;
+  if (!v.practiceSentences || !v.practiceSentences.length) {
+    box.innerHTML = `<div class="practice-loading">目前沒有練習句 <button class="practice-refresh" onclick="genQuizPractice(${i}, quizWrong[${i}])">🔄 重新產生</button></div>`;
+    return;
+  }
+  box.innerHTML = `
+    <ul class="practice-list">${v.practiceSentences.map(s => `
+      <li>
+        <div class="practice-kr">${s.kr} <button class="tts-btn" onclick="speak('${esc(s.kr)}')">🔊</button></div>
+        <div class="practice-zh">${s.zh}</div>
+      </li>`).join('')}</ul>
+    <button class="practice-refresh quiz-review-refresh" onclick="genQuizPractice(${i}, quizWrong[${i}])">🔄 重新產生</button>`;
 }
 
 // ── TTS ──
