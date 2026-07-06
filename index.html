@@ -240,6 +240,35 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 .card-btn.good { border-color: var(--green); color: var(--green); }
 .card-btn.del { border-color: #C62828; color: #C62828; flex: 0 0 56px; padding: 16px 4px; }
 
+/* ── AI 練習句 ── */
+.practice-toggle-btn {
+  width: 100%; margin-top: 12px; padding: 14px 8px;
+  border-radius: var(--rs); border: 1.5px dashed var(--accent);
+  background: var(--accent-soft); color: var(--accent);
+  font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit;
+}
+.practice-box { display: none; margin-top: 14px; }
+.practice-box.show { display: block; }
+.practice-loading { font-size: 15px; color: var(--muted); text-align: center; padding: 14px 0; }
+.practice-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 13px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
+}
+.practice-refresh {
+  border: none; background: none; color: var(--accent);
+  font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit;
+  text-transform: none; letter-spacing: 0;
+}
+.practice-list { list-style: none; }
+.practice-list li {
+  padding: 10px 12px; border-radius: var(--rs);
+  background: var(--bg); margin-bottom: 8px;
+}
+.practice-list li:last-child { margin-bottom: 0; }
+.practice-kr { font-family: 'Noto Sans KR'; font-size: 18px; margin-bottom: 4px; }
+.practice-zh { font-size: 14px; color: var(--text2); }
+
 /* ── FILL ── */
 .fill-card {
   background: var(--surface); border-radius: var(--r);
@@ -805,7 +834,66 @@ function renderCard() {
       <button class="card-btn speak" onclick="speak('${esc(v.kr)}')">🔊 發音</button>
       <button class="card-btn good" onclick="markCard('good')">✅ 掌握</button>
       <button class="card-btn del" onclick="deleteCurrentCard()">🗑️</button>
-    </div>`;
+    </div>
+    <button class="practice-toggle-btn" onclick="genVocabPractice()">📚 產生 5 個練習句</button>
+    <div class="practice-box" id="vocabPracticeBox"></div>`;
+  if (v.practiceSentences && v.practiceSentences.length) renderVocabPractice(v);
+}
+
+// ── AI 練習句（單字）──
+async function genVocabPractice() {
+  const v = filteredVocab[cardIdx];
+  if (!v) return;
+  const key = getKey();
+  if (!key) { if (confirm('需要設定 Gemini API Key。\n前往設定？')) showApiSettings(); return; }
+  const box = document.getElementById('vocabPracticeBox');
+  if (!box) return;
+  box.classList.add('show');
+  box.innerHTML = `<div class="practice-loading">⏳ 產生練習句中...</div>`;
+  try {
+    const prompt = `你是韓語教學助手。請針對韓語單字「${v.kr}」（讀音：${v.reading||'無'}，中文意思：${v.zh}）造5個適合初中級學習者練習的韓文例句。
+例句需自然、實用，長度適中，並盡量涵蓋不同語境或時態。
+嚴格以JSON回應，不要markdown，格式：
+{"sentences":[{"kr":"韓文例句","zh":"中文翻譯"}]}`;
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.5 }
+        })
+      }
+    );
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    const text = data.candidates[0].content.parts[0].text;
+    const clean = text.replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(clean);
+    v.practiceSentences = parsed.sentences || [];
+    save('vocab', vocab);
+    renderVocabPractice(v);
+  } catch(err) {
+    box.innerHTML = `<div class="practice-loading">⚠️ ${esc(err.message)}</div>`;
+  }
+}
+
+function renderVocabPractice(v) {
+  const box = document.getElementById('vocabPracticeBox');
+  if (!box) return;
+  box.classList.add('show');
+  if (!v.practiceSentences || !v.practiceSentences.length) {
+    box.innerHTML = `<div class="practice-loading">目前沒有練習句</div>`;
+    return;
+  }
+  box.innerHTML = `
+    <div class="practice-hdr">📚 練習句 <button class="practice-refresh" onclick="genVocabPractice()">🔄 重新產生</button></div>
+    <ul class="practice-list">${v.practiceSentences.map(s => `
+      <li>
+        <div class="practice-kr">${s.kr} <button class="tts-btn" onclick="speak('${esc(s.kr)}')">🔊</button></div>
+        <div class="practice-zh">${s.zh}</div>
+      </li>`).join('')}</ul>`;
 }
 
 function flipCard(el) { el.querySelector('.card-inner').classList.toggle('flipped'); }
@@ -1065,8 +1153,71 @@ function renderGrammar() {
             <div class="grammar-ex-kr">${ex.kr} <button class="tts-btn" onclick="speak('${esc(ex.kr)}')">🔊</button></div>
             <div class="grammar-ex-zh">${ex.zh}</div>
           </li>`).join('')}</ul>`:''}
+        <button class="practice-toggle-btn" onclick="genGrammarPractice(${i})">🎯 產生 5 個練習句</button>
+        <div class="practice-box" id="gPracticeBox${i}"></div>
       </div>
     </div>`).join('');
+  grammar.forEach((g,i) => { if (g.practiceExamples?.length) renderGrammarPractice(i); });
+}
+
+// ── AI 練習句（文法）──
+async function genGrammarPractice(i) {
+  const g = grammar[i];
+  if (!g) return;
+  const key = getKey();
+  if (!key) { if (confirm('需要設定 Gemini API Key。\n前往設定？')) showApiSettings(); return; }
+  const box = document.getElementById('gPracticeBox'+i);
+  if (!box) return;
+  box.classList.add('show');
+  box.innerHTML = `<div class="practice-loading">⏳ 產生練習句中...</div>`;
+  try {
+    const prompt = `你是韓語教學助手。請針對以下韓語文法造5個適合練習用的例句：
+文法名稱：${g.title||'無'}
+韓文形式：${g.kr||'無'}
+說明：${g.pattern||'無'}
+例句需自然、實用，涵蓋不同主詞與情境，並確實符合此文法規則，適合初中級學習者練習。
+嚴格以JSON回應，不要markdown，格式：
+{"sentences":[{"kr":"韓文例句","zh":"中文翻譯"}]}`;
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.5 }
+        })
+      }
+    );
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    const text = data.candidates[0].content.parts[0].text;
+    const clean = text.replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(clean);
+    g.practiceExamples = parsed.sentences || [];
+    save('grammar', grammar);
+    renderGrammarPractice(i);
+  } catch(err) {
+    box.innerHTML = `<div class="practice-loading">⚠️ ${esc(err.message)}</div>`;
+  }
+}
+
+function renderGrammarPractice(i) {
+  const g = grammar[i];
+  const box = document.getElementById('gPracticeBox'+i);
+  if (!box || !g) return;
+  box.classList.add('show');
+  if (!g.practiceExamples || !g.practiceExamples.length) {
+    box.innerHTML = `<div class="practice-loading">目前沒有練習句</div>`;
+    return;
+  }
+  box.innerHTML = `
+    <div class="practice-hdr">📚 AI 練習句 <button class="practice-refresh" onclick="genGrammarPractice(${i})">🔄 重新產生</button></div>
+    <ul class="practice-list">${g.practiceExamples.map(s => `
+      <li>
+        <div class="practice-kr">${s.kr} <button class="tts-btn" onclick="speak('${esc(s.kr)}')">🔊</button></div>
+        <div class="practice-zh">${s.zh}</div>
+      </li>`).join('')}</ul>`;
 }
 function toggleG(i) {
   const b = document.getElementById('gb'+i);
