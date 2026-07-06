@@ -238,6 +238,7 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 .card-btn.again { border-color: var(--accent); color: var(--accent); }
 .card-btn.speak { border-color: var(--blue); color: var(--blue); }
 .card-btn.good { border-color: var(--green); color: var(--green); }
+.card-btn.del { border-color: #C62828; color: #C62828; flex: 0 0 56px; padding: 16px 4px; }
 
 /* ── FILL ── */
 .fill-card {
@@ -280,6 +281,13 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
   width: 52px; height: 52px; border-radius: 50%;
   background: var(--blue); color: white; border: none;
   font-size: 22px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.pron-del {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--red-soft); color: #C62828; border: 1px solid #F0C4C0;
+  font-size: 20px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
@@ -516,7 +524,10 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 
   <!-- ── 例句 ── -->
   <div class="section" id="sec-fill">
-    <div class="page-title">💬 例句</div>
+    <div class="lib-header">
+      <div class="page-title" style="margin:0">💬 例句</div>
+      <button class="lib-clear" onclick="dedupeSentences()">🧹 清除重複</button>
+    </div>
     <div class="tab-row">
       <button class="tab-btn active" onclick="switchTab('sent-list',this)">例句列表</button>
       <button class="tab-btn" onclick="switchTab('sent-card',this)">例句卡</button>
@@ -527,7 +538,10 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 
   <!-- ── 發音 ── -->
   <div class="section" id="sec-pron">
-    <div class="page-title">🔊 發音對照</div>
+    <div class="lib-header">
+      <div class="page-title" style="margin:0">🔊 發音對照</div>
+      <button class="lib-clear" onclick="dedupeVocab()">🧹 清除重複</button>
+    </div>
     <div id="pronArea"></div>
   </div>
 
@@ -790,6 +804,7 @@ function renderCard() {
       <button class="card-btn again" onclick="markCard('again')">❌ 再練</button>
       <button class="card-btn speak" onclick="speak('${esc(v.kr)}')">🔊 發音</button>
       <button class="card-btn good" onclick="markCard('good')">✅ 掌握</button>
+      <button class="card-btn del" onclick="deleteCurrentCard()">🗑️</button>
     </div>`;
 }
 
@@ -801,6 +816,19 @@ function markCard(status) {
   const orig = vocab.find(x => x.kr === v.kr);
   if (orig) { orig.status = status; save('vocab', vocab); }
   cardIdx = (cardIdx+1) % filteredVocab.length;
+  renderCard();
+}
+
+function deleteCurrentCard() {
+  if (!filteredVocab.length) return;
+  const v = filteredVocab[cardIdx];
+  if (!confirm(`確定要刪除「${v.kr}」嗎？`)) return;
+  const idx = vocab.findIndex(x => x.kr === v.kr && x.zh === v.zh);
+  if (idx > -1) vocab.splice(idx, 1);
+  filteredVocab.splice(cardIdx, 1);
+  if (cardIdx >= filteredVocab.length) cardIdx = Math.max(0, filteredVocab.length - 1);
+  save('vocab', vocab);
+  updateBadge();
   renderCard();
 }
 
@@ -888,16 +916,47 @@ function renderSentList() {
             <div style="font-size:17px;color:var(--text2);line-height:1.5">${s.zh}</div>
           </div>
           <button class="pron-play" onclick="speak('${esc(s.kr)}')" style="flex-shrink:0;margin-top:4px">▶</button>
+          <button class="pron-del" onclick="deleteSentence(${i})" style="flex-shrink:0;margin-top:4px">🗑️</button>
         </div>
       </div>`).join('')}`;
 }
 
+// getAllSentences tags each item with its origin so it can be deleted correctly:
+// _src 's' = standalone sentences array (index _i)
+// _src 'g' = example nested inside a grammar entry (grammar index _gi, example index _ei)
 function getAllSentences() {
-  const all = [...sentences];
-  grammar.forEach(g => g.examples?.forEach(ex => {
-    if (!all.find(x => x.kr === ex.kr)) all.push(ex);
+  const all = sentences.map((s, i) => ({ ...s, _src: 's', _i: i }));
+  grammar.forEach((g, gi) => g.examples?.forEach((ex, ei) => {
+    if (!all.find(x => x.kr === ex.kr)) all.push({ ...ex, _src: 'g', _gi: gi, _ei: ei });
   }));
   return all;
+}
+
+function deleteSentence(i) {
+  const all = getAllSentences();
+  const item = all[i]; if (!item) return;
+  if (!confirm('確定要刪除這個例句嗎？')) return;
+  if (item._src === 's') {
+    sentences.splice(item._i, 1);
+    save('sentences', sentences);
+  } else {
+    grammar[item._gi].examples.splice(item._ei, 1);
+    save('grammar', grammar);
+  }
+  renderSentList();
+}
+
+function dedupeSentences() {
+  const seen = new Set();
+  const before = sentences.length;
+  sentences = sentences.filter(s => {
+    const key = s.kr + '|' + s.zh;
+    if (seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+  save('sentences', sentences);
+  renderSentList();
+  toast(`✅ 已移除 ${before - sentences.length} 個重複例句（不含文法內的例句）`);
 }
 
 // ── 例句卡 ──
@@ -951,7 +1010,7 @@ function nextSent() {
 function renderPron() {
   const area = document.getElementById('pronArea');
   if (!vocab.length) { area.innerHTML = emptyState('🔊','還沒有單字','先用掃描功能上傳書頁'); return; }
-  area.innerHTML = vocab.map(v => `
+  area.innerHTML = vocab.map((v,i) => `
     <div class="pron-card">
       <div class="pron-kr">${v.kr}</div>
       <div class="pron-info">
@@ -959,7 +1018,31 @@ function renderPron() {
         <div class="pron-zh">${v.zh}</div>
       </div>
       <button class="pron-play" onclick="speak('${esc(v.kr)}')">▶</button>
+      <button class="pron-del" onclick="deleteVocab(${i})">🗑️</button>
     </div>`).join('');
+}
+
+function deleteVocab(i) {
+  const v = vocab[i]; if (!v) return;
+  if (!confirm(`確定要刪除「${v.kr}」嗎？`)) return;
+  vocab.splice(i, 1);
+  save('vocab', vocab);
+  updateBadge();
+  renderPron();
+}
+
+function dedupeVocab() {
+  const seen = new Set();
+  const before = vocab.length;
+  vocab = vocab.filter(v => {
+    const key = v.kr + '|' + v.zh;
+    if (seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+  save('vocab', vocab);
+  updateBadge();
+  renderPron();
+  toast(`✅ 已移除 ${before - vocab.length} 個重複單字`);
 }
 
 // ── GRAMMAR ──
