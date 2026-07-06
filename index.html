@@ -844,11 +844,14 @@ function renderCard() {
 async function genVocabPractice() {
   const v = filteredVocab[cardIdx];
   if (!v) return;
-  const key = getKey();
-  if (!key) { if (confirm('需要設定 Gemini API Key。\n前往設定？')) showApiSettings(); return; }
   const box = document.getElementById('vocabPracticeBox');
   if (!box) return;
   box.classList.add('show');
+  const key = getKey();
+  if (!key) {
+    box.innerHTML = `<div class="practice-loading">⚠️ 尚未設定 API Key <button class="practice-refresh" onclick="showApiSettings()">前往設定</button></div>`;
+    return;
+  }
   box.innerHTML = `<div class="practice-loading">⏳ 產生練習句中...</div>`;
   try {
     const prompt = `你是韓語教學助手。請針對韓語單字「${v.kr}」（讀音：${v.reading||'無'}，中文意思：${v.zh}）造5個適合初中級學習者練習的韓文例句。
@@ -1164,11 +1167,14 @@ function renderGrammar() {
 async function genGrammarPractice(i) {
   const g = grammar[i];
   if (!g) return;
-  const key = getKey();
-  if (!key) { if (confirm('需要設定 Gemini API Key。\n前往設定？')) showApiSettings(); return; }
   const box = document.getElementById('gPracticeBox'+i);
   if (!box) return;
   box.classList.add('show');
+  const key = getKey();
+  if (!key) {
+    box.innerHTML = `<div class="practice-loading">⚠️ 尚未設定 API Key <button class="practice-refresh" onclick="showApiSettings()">前往設定</button></div>`;
+    return;
+  }
   box.innerHTML = `<div class="practice-loading">⏳ 產生練習句中...</div>`;
   try {
     const prompt = `你是韓語教學助手。請針對以下韓語文法造5個適合練習用的例句：
