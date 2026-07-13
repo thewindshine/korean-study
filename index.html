@@ -10,6 +10,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="한공부">
 <link rel="apple-touch-icon" href="/korean-study/icon-192.svg">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
 
@@ -489,6 +492,7 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
   </div>
   <div class="header-right">
     <span class="stat-badge" id="totalBadge">0 個單字</span>
+    <button class="hdr-btn" id="authBtn" onclick="handleAuthClick()">👤 登入</button>
     <button class="hdr-btn" onclick="showApiSettings()">⚙️</button>
   </div>
 </header>
@@ -626,7 +630,7 @@ main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 
 <script>
 // ── STORAGE ──
-function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); queueCloudSync(); }
 function load(key, def) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch { return def; } }
 
 // ── STATE (loaded from localStorage) ──
@@ -637,6 +641,121 @@ let imageBase64 = null;
 let filteredVocab = [...vocab];
 let cardIdx = 0;
 let quizQs = [], quizIdx = 0, quizScore = 0, quizWrong = [];
+
+// ── FIREBASE 雲端同步 ──
+const firebaseConfig = {
+  apiKey: "AIzaSyAo_TyZ-AfK85y-OLbMtPtDKuC7oiTrw80",
+  authDomain: "korean-study-9c714.firebaseapp.com",
+  projectId: "korean-study-9c714",
+  storageBucket: "korean-study-9c714.firebasestorage.app",
+  messagingSenderId: "358632060986",
+  appId: "1:358632060986:web:681f5ebfc77958c7195d03",
+  measurementId: "G-C33VDGWLNF"
+};
+firebase.initializeApp(firebaseConfig);
+const fbAuth = firebase.auth();
+const fbDb = firebase.firestore();
+
+let currentUser = null;
+let isApplyingRemote = false;
+let cloudSyncTimer = null;
+let unsubSnapshot = null;
+
+function handleAuthClick() {
+  if (currentUser) {
+    if (confirm('要登出嗎？登出後資料仍會留在這台裝置的本機儲存空間。')) fbAuth.signOut();
+  } else {
+    fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .catch(err => toast('⚠️ 登入失敗：' + err.message));
+  }
+}
+
+function updateAuthUI() {
+  const btn = document.getElementById('authBtn');
+  if (!btn) return;
+  if (currentUser) {
+    const name = currentUser.displayName ? currentUser.displayName.split(' ')[0] : '已登入';
+    btn.textContent = '☁️ ' + name;
+    btn.title = (currentUser.email || '') + '（點擊登出）';
+  } else {
+    btn.textContent = '👤 登入';
+    btn.title = '登入 Google 帳號以跨裝置同步單字';
+  }
+}
+
+fbAuth.onAuthStateChanged(async (user) => {
+  currentUser = user;
+  updateAuthUI();
+  if (unsubSnapshot) { unsubSnapshot(); unsubSnapshot = null; }
+  if (user) {
+    await initialCloudSync(user);
+    unsubSnapshot = fbDb.collection('users').doc(user.uid).onSnapshot(applyRemoteSnapshot);
+    toast('☁️ 已登入，資料將自動雲端同步');
+  }
+});
+
+async function initialCloudSync(user) {
+  const ref = fbDb.collection('users').doc(user.uid);
+  try {
+    const snap = await ref.get();
+    if (snap.exists) {
+      applyRemoteData(snap.data());
+    } else {
+      await ref.set({
+        vocab, grammar, sentences,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+  } catch (err) {
+    toast('⚠️ 雲端讀取失敗：' + err.message);
+  }
+}
+
+function applyRemoteSnapshot(snap) {
+  if (!snap.exists || snap.metadata.hasPendingWrites) return;
+  applyRemoteData(snap.data());
+}
+
+function applyRemoteData(data) {
+  isApplyingRemote = true;
+  vocab = data.vocab || [];
+  grammar = data.grammar || [];
+  sentences = data.sentences || [];
+  localStorage.setItem('vocab', JSON.stringify(vocab));
+  localStorage.setItem('grammar', JSON.stringify(grammar));
+  localStorage.setItem('sentences', JSON.stringify(sentences));
+  refreshCurrentView();
+  isApplyingRemote = false;
+}
+
+function queueCloudSync() {
+  if (!currentUser || isApplyingRemote) return;
+  clearTimeout(cloudSyncTimer);
+  cloudSyncTimer = setTimeout(pushToCloud, 800);
+}
+
+async function pushToCloud() {
+  if (!currentUser) return;
+  try {
+    await fbDb.collection('users').doc(currentUser.uid).set({
+      vocab, grammar, sentences,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+  } catch (err) {
+    toast('⚠️ 雲端同步失敗：' + err.message);
+  }
+}
+
+function refreshCurrentView() {
+  updateBadge();
+  const active = document.querySelector('.section.active');
+  if (!active) return;
+  const id = active.id.replace('sec-', '');
+  if (id === 'cards') { filteredVocab = [...vocab]; cardIdx = 0; renderCard(); }
+  if (id === 'fill') renderSentList();
+  if (id === 'pron') renderPron();
+  if (id === 'grammar') renderGrammar();
+}
 
 // ── NAV ──
 function nav(name, btn) {
