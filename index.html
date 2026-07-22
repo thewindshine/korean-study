@@ -660,6 +660,7 @@ let currentUser = null;
 let isApplyingRemote = false;
 let cloudSyncTimer = null;
 let unsubSnapshot = null;
+let lastSyncedPayload = null; // JSON of {vocab,grammar,sentences} that we last pushed/applied — used to ignore echoes of our own writes
 
 function handleAuthClick() {
   if (currentUser) {
@@ -705,6 +706,7 @@ async function initialCloudSync(user) {
         vocab, grammar, sentences,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
+      lastSyncedPayload = JSON.stringify({ vocab, grammar, sentences });
     }
   } catch (err) {
     toast('⚠️ 雲端讀取失敗：' + err.message);
@@ -713,7 +715,15 @@ async function initialCloudSync(user) {
 
 function applyRemoteSnapshot(snap) {
   if (!snap.exists || snap.metadata.hasPendingWrites) return;
-  applyRemoteData(snap.data());
+  const data = snap.data();
+  const payload = JSON.stringify({
+    vocab: data.vocab || [], grammar: data.grammar || [], sentences: data.sentences || []
+  });
+  // This snapshot is just the server confirming a write we already made (or already have) —
+  // nothing actually changed, so don't re-render and reset the flashcard position.
+  if (payload === lastSyncedPayload) return;
+  lastSyncedPayload = payload;
+  applyRemoteData(data);
 }
 
 function applyRemoteData(data) {
@@ -737,10 +747,13 @@ function queueCloudSync() {
 async function pushToCloud() {
   if (!currentUser) return;
   try {
+    const payload = JSON.stringify({ vocab, grammar, sentences });
     await fbDb.collection('users').doc(currentUser.uid).set({
       vocab, grammar, sentences,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     }, { merge: true });
+    // Remember what we just pushed so the resulting onSnapshot echo is recognized and ignored.
+    lastSyncedPayload = payload;
   } catch (err) {
     toast('⚠️ 雲端同步失敗：' + err.message);
   }
@@ -751,7 +764,13 @@ function refreshCurrentView() {
   const active = document.querySelector('.section.active');
   if (!active) return;
   const id = active.id.replace('sec-', '');
-  if (id === 'cards') { filteredVocab = [...vocab]; cardIdx = 0; renderCard(); }
+  if (id === 'cards') {
+    const curWord = filteredVocab[cardIdx];
+    filteredVocab = [...vocab];
+    const keptIdx = curWord ? filteredVocab.findIndex(v => v.kr === curWord.kr && v.zh === curWord.zh) : -1;
+    cardIdx = keptIdx > -1 ? keptIdx : 0;
+    renderCard();
+  }
   if (id === 'fill') renderSentList();
   if (id === 'pron') renderPron();
   if (id === 'grammar') renderGrammar();
